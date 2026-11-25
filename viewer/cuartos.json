@@ -3,15 +3,18 @@
   {
    "id": "cuarto",
    "nombre": "Cuarto con vestidor",
+   "nombre_en": "Bedroom with walk-in closet",
    "archivo": "cuartos/cuarto.glb",
    "modelos": [
     {
      "nombre": "Cama",
+     "nombre_en": "Bed",
      "archivo": "proyectos/cuarto/modelos/cama.glb",
      "miniatura": "proyectos/cuarto/modelos/cama.webp"
     },
     {
      "nombre": "Lampara",
+     "nombre_en": "Lamp",
      "archivo": "proyectos/cuarto/modelos/lampara.glb",
      "miniatura": "proyectos/cuarto/modelos/lampara.webp"
     }
@@ -19,10 +22,12 @@
    "mapas": [
     {
      "nombre": "Planta 3D",
+     "nombre_en": "3D floor plan",
      "archivo": "proyectos/cuarto/mapa_1.jpg"
     },
     {
      "nombre": "Plano de objetos",
+     "nombre_en": "Object plan",
      "archivo": "proyectos/cuarto/mapa_2.jpg"
     }
    ],
@@ -32,6 +37,7 @@
    "vistas": [
     {
      "nombre": "Desde la puerta",
+     "nombre_en": "From the door",
      "pos": [
       1.15,
       1.55,
@@ -46,6 +52,7 @@
     },
     {
      "nombre": "Hacia la TV",
+     "nombre_en": "Toward the TV",
      "pos": [
       0.9,
       1.45,
@@ -60,6 +67,7 @@
     },
     {
      "nombre": "Vestidor",
+     "nombre_en": "Walk-in closet",
      "pos": [
       1.3,
       1.55,
@@ -74,6 +82,7 @@
     },
     {
      "nombre": "Desde el vestidor",
+     "nombre_en": "From the closet",
      "pos": [
       3.25,
       1.55,
@@ -91,50 +100,60 @@
   {
    "id": "hotel",
    "nombre": "Habitación de hotel",
+   "nombre_en": "Hotel room",
    "archivo": "cuartos/hotel.glb",
    "modelos": [
     {
      "nombre": "Cama matrimonial",
+     "nombre_en": "Double bed",
      "archivo": "proyectos/hotel/modelos/bed.glb",
      "miniatura": "proyectos/hotel/modelos/bed.webp"
     },
     {
      "nombre": "Buró",
+     "nombre_en": "Nightstand",
      "archivo": "proyectos/hotel/modelos/bedside_table.glb",
      "miniatura": "proyectos/hotel/modelos/bedside_table.webp"
     },
     {
      "nombre": "Escritorio",
+     "nombre_en": "Desk",
      "archivo": "proyectos/hotel/modelos/desk.glb",
      "miniatura": "proyectos/hotel/modelos/desk.webp"
     },
     {
      "nombre": "Silla del escritorio",
+     "nombre_en": "Desk chair",
      "archivo": "proyectos/hotel/modelos/desk_chair.glb",
      "miniatura": "proyectos/hotel/modelos/desk_chair.webp"
     },
     {
      "nombre": "Silla naranja",
+     "nombre_en": "Orange chair",
      "archivo": "proyectos/hotel/modelos/lounge_chair.glb",
      "miniatura": "proyectos/hotel/modelos/lounge_chair.webp"
     },
     {
      "nombre": "Mesita del teléfono",
+     "nombre_en": "Phone table",
      "archivo": "proyectos/hotel/modelos/phone_desk.glb",
      "miniatura": "proyectos/hotel/modelos/phone_desk.webp"
     },
     {
      "nombre": "Mueble abierto",
+     "nombre_en": "Open shelf unit",
      "archivo": "proyectos/hotel/modelos/shelf_unit.glb",
      "miniatura": "proyectos/hotel/modelos/shelf_unit.webp"
     },
     {
      "nombre": "Lavabo",
+     "nombre_en": "Vanity",
      "archivo": "proyectos/hotel/modelos/vanity.glb",
      "miniatura": "proyectos/hotel/modelos/vanity.webp"
     },
     {
      "nombre": "Lámpara de pared",
+     "nombre_en": "Wall lamp",
      "archivo": "proyectos/hotel/modelos/wall_sconce.glb",
      "miniatura": "proyectos/hotel/modelos/wall_sconce.webp"
     }
@@ -142,16 +161,19 @@
    "mapas": [
     {
      "nombre": "Planta 3D",
+     "nombre_en": "3D floor plan",
      "archivo": "proyectos/hotel/mapa_1.jpg"
     },
     {
      "nombre": "Plano de objetos",
+     "nombre_en": "Object plan",
      "archivo": "proyectos/hotel/mapa_2.jpg"
     }
    ],
    "vistas": [
     {
      "nombre": "Camas",
+     "nombre_en": "Beds",
      "pos": [
       2.332,
       1.55,
@@ -166,6 +188,7 @@
     },
     {
      "nombre": "Escritorio",
+     "nombre_en": "Desk",
      "pos": [
       0.033,
       1.55,
@@ -180,6 +203,7 @@
     },
     {
      "nombre": "Lavabo y biombo",
+     "nombre_en": "Vanity and screen",
      "pos": [
       -2.276,
       1.55,
@@ -194,6 +218,7 @@
     },
     {
      "nombre": "Muro de piedra",
+     "nombre_en": "Stone wall",
      "pos": [
       -1.395,
       1.55,
@@ -214,50 +239,60 @@
   {
    "id": "casa_comedor",
    "nombre": "Comedor y cocina",
+   "nombre_en": "Dining room and kitchen",
    "archivo": "cuartos/casa_comedor.glb",
    "modelos": [
     {
      "nombre": "Banco",
+     "nombre_en": "Bar stool",
      "archivo": "proyectos/casa_comedor/modelos/bar_stool.glb",
      "miniatura": "proyectos/casa_comedor/modelos/bar_stool.webp"
     },
     {
      "nombre": "Silla de comedor",
+     "nombre_en": "Dining chair",
      "archivo": "proyectos/casa_comedor/modelos/dining_chair.glb",
      "miniatura": "proyectos/casa_comedor/modelos/dining_chair.webp"
     },
     {
      "nombre": "Mesa de comedor",
+     "nombre_en": "Dining table",
      "archivo": "proyectos/casa_comedor/modelos/dining_table.glb",
      "miniatura": "proyectos/casa_comedor/modelos/dining_table.webp"
     },
     {
      "nombre": "Isla de cocina",
+     "nombre_en": "Kitchen island",
      "archivo": "proyectos/casa_comedor/modelos/kitchen_island.glb",
      "miniatura": "proyectos/casa_comedor/modelos/kitchen_island.webp"
     },
     {
      "nombre": "Mueble tipo chimenea",
+     "nombre_en": "Mantel console",
      "archivo": "proyectos/casa_comedor/modelos/mantel.glb",
      "miniatura": "proyectos/casa_comedor/modelos/mantel.webp"
     },
     {
      "nombre": "Reloj",
+     "nombre_en": "Clock",
      "archivo": "proyectos/casa_comedor/modelos/mantel_clock.glb",
      "miniatura": "proyectos/casa_comedor/modelos/mantel_clock.webp"
     },
     {
      "nombre": "Planta",
+     "nombre_en": "Plant",
      "archivo": "proyectos/casa_comedor/modelos/peace_lily.glb",
      "miniatura": "proyectos/casa_comedor/modelos/peace_lily.webp"
     },
     {
      "nombre": "Aparador",
+     "nombre_en": "Sideboard",
      "archivo": "proyectos/casa_comedor/modelos/sideboard.glb",
      "miniatura": "proyectos/casa_comedor/modelos/sideboard.webp"
     },
     {
      "nombre": "Florero",
+     "nombre_en": "Vase",
      "archivo": "proyectos/casa_comedor/modelos/table_vase.glb",
      "miniatura": "proyectos/casa_comedor/modelos/table_vase.webp"
     }
@@ -265,16 +300,19 @@
    "mapas": [
     {
      "nombre": "Planta 3D",
+     "nombre_en": "3D floor plan",
      "archivo": "proyectos/casa_comedor/mapa_1.jpg"
     },
     {
      "nombre": "Plano de objetos",
+     "nombre_en": "Object plan",
      "archivo": "proyectos/casa_comedor/mapa_2.jpg"
     }
    ],
    "vistas": [
     {
      "nombre": "Comedor",
+     "nombre_en": "Dining area",
      "pos": [
       3.59,
       1.45,
@@ -289,6 +327,7 @@
     },
     {
      "nombre": "Isla",
+     "nombre_en": "Island",
      "pos": [
       1.677,
       1.45,
@@ -303,6 +342,7 @@
     },
     {
      "nombre": "Cocina",
+     "nombre_en": "Kitchen",
      "pos": [
       2.282,
       1.45,
@@ -317,6 +357,7 @@
     },
     {
      "nombre": "Muebles altos",
+     "nombre_en": "Tall cabinets",
      "pos": [
       -0.882,
       1.45,

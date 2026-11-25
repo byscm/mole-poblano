@@ -9,6 +9,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { t, loc, setLang, onLangChange, applyStatic } from './i18n.js';
 
 // ---------- Ajustes ----------
 const ALTURA_OJOS = 1.6;      // m sobre el piso en modo caminar
@@ -27,6 +28,7 @@ const VER = new URL(import.meta.url).search;
 const carga = $('carga'), cargaBarra = $('cargaBarra'), cargaTexto = $('cargaTexto'), cargaTitulo = $('cargaTitulo');
 const esTactil = matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
 if (esTactil) document.body.classList.add('tactil');
+applyStatic();
 
 // ---------- Render ----------
 const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true, powerPreference: 'high-performance' });
@@ -173,7 +175,7 @@ async function construirMapa(raiz) {
         }
       }
     });
-    if (hechas % 20 === 0) { progreso(0.9 + 0.1 * hechas / mallas.length, 'Preparando paredes para caminar…'); await pausa(); }
+    if (hechas % 20 === 0) { progreso(0.9 + 0.1 * hechas / mallas.length, t('load.walls')); await pausa(); }
   }
   // Rellenar huecos chicos del piso (cierre morfológico de 3 celdas).
   // dilatar (buscar=1: alguna vecina en 1) o erosionar (buscar=0: alguna vecina en 0 → queda en 0)
@@ -282,7 +284,7 @@ function vistasAutomaticas(cant = 4) {
       if (area > mejorArea) { mejorArea = area; mejorAng = (k / N) * Math.PI * 2; }
     }
     const lx = x + Math.cos(mejorAng) * 3, lz = z + Math.sin(mejorAng) * 3;
-    return { nombre: `Vista ${n + 1}`, pos: [x, piso + ALTURA_OJOS, z], mirar: [lx, piso + 1.2, lz] };
+    return { pos: [x, piso + ALTURA_OJOS, z], mirar: [lx, piso + 1.2, lz] };
   });
 }
 
@@ -380,13 +382,13 @@ function textoRender(t, frac) {
 }
 async function empezarRender() {
   if (renderActivo || vistaActual !== 'escena' || !actual) return;
-  if (esTactil && !confirm('El render usa la PC con Blender y puede tardar. En el celular solo funciona si la página está abierta en la misma PC. ¿Continuar?')) return;
+  if (esTactil && !confirm(t('render.confirm'))) return;
   if (document.pointerLockElement) document.exitPointerLock();
   teclas.clear(); joy.x = joy.y = 0; subirTactil = 0; transicion = null;
   renderActivo = true; document.body.classList.add('renderizando');
   renderImg.classList.remove('activa'); renderImg.removeAttribute('src');
   $('btnDescargar').disabled = true;
-  textoRender('Abriendo Blender…', 0.02);
+  textoRender(t('render.opening'), 0.02);
   const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
   const p = camera.position, m = p.clone().addScaledVector(dir, 2);
   const esc = Math.min(1, 1600 / innerWidth);
@@ -399,7 +401,7 @@ async function empezarRender() {
   } catch { r = null; }
   if (!renderActivo) return;
   if (!r || !r.ok || !d.id) {
-    const msg = d?.error || 'El render necesita abrir el visor con servir.bat (servidor con Blender), en esta misma PC.';
+    const msg = d?.error || t('render.needServer');
     textoRender(msg, 0); return;
   }
   renderId = d.id;
@@ -420,10 +422,10 @@ async function empezarRender() {
       }
     }
     const listos = e.paso || 0;
-    if (e.fase === 'listo') { textoRender(`Listo: ${e.muestras} muestras por píxel · ${e.segundos} s`, 1); return; }
-    if (e.fase === 'error') { textoRender('Blender falló. Revisa render/resultados/<fecha>/blender.log', listos / total); return; }
-    if (e.fase === 'abriendo' || e.fase === 'preparando' || !e.fase) textoRender('Abriendo Blender y cargando el cuarto…', 0.05);
-    else textoRender(`Renderizando ${e.muestras} muestras por píxel (paso ${listos + 1} de ${total})…`, Math.max(0.08, listos / total));
+    if (e.fase === 'listo') { textoRender(t('render.done', { m: e.muestras, s: e.segundos }), 1); return; }
+    if (e.fase === 'error') { textoRender(t('render.failed'), listos / total); return; }
+    if (e.fase === 'abriendo' || e.fase === 'preparando' || !e.fase) textoRender(t('render.loading'), 0.05);
+    else textoRender(t('render.step', { m: e.muestras, i: listos + 1, n: total }), Math.max(0.08, listos / total));
     renderTimer = setTimeout(revisar, 700);
   };
   revisar();
@@ -489,18 +491,18 @@ function mostrarFicha(o) {
   marcoSel.position.set(c[0], c[2], -c[1]); marcoSel.rotation.y = g; marcoSel.renderOrder = 999;
   scene.add(marcoSel); fichaActual = o; seguirMarco(o);
   const md = o.medidas, plano = md.fondo < 0.005 || md.alto < 0.005;
-  const filas = [['Largo', m2(md.ancho)]];
-  if (md.fondo >= 0.005) filas.push(['Ancho / fondo', m2(md.fondo)]);
-  if (md.alto >= 0.005) filas.push(['Alto', m2(md.alto)]);
-  if (md.sobrePiso > 0.03) filas.push(['Sobre el piso', m2(md.sobrePiso)]);
-  fichaEl.innerHTML = `<div class="cab"><h3>${escHtml(o.nombre)}${o.num ? ` <span class="num">(${o.num} de ${o.cantidad})</span>` : ''}${o.cambio ? ` <span class="num">· en lugar de ${escHtml(o.base.nombre)}</span>` : ''}</h3>
-    <button class="cerrar" aria-label="Cerrar">✕</button></div>
-    ${vistaActual === 'mapa' ? '<button class="ver3d">Ver en 3D ›</button>' : ''}
+  const filas = [[t('card.length'), m2(md.ancho)]];
+  if (md.fondo >= 0.005) filas.push([t('card.depth'), m2(md.fondo)]);
+  if (md.alto >= 0.005) filas.push([t('card.height'), m2(md.alto)]);
+  if (md.sobrePiso > 0.03) filas.push([t('card.aboveFloor'), m2(md.sobrePiso)]);
+  fichaEl.innerHTML = `<div class="cab"><h3>${escHtml(loc(o, 'nombre'))}${o.num ? ` <span class="num">${t('card.numOf', { num: o.num, total: o.cantidad })}</span>` : ''}${o.cambio ? ` <span class="num">${escHtml(t('card.insteadOf', { name: loc(o.base, 'nombre') }))}</span>` : ''}</h3>
+    <button class="cerrar" aria-label="${t('close')}">✕</button></div>
+    ${vistaActual === 'mapa' ? `<button class="ver3d">${t('card.view3d')}</button>` : ''}
     ${o.img ? `<img src="${escHtml(o.img)}" alt="">` : ''}
-    ${o.descripcion ? `<p>${escHtml(o.descripcion)}</p>` : ''}
+    ${loc(o, 'descripcion') ? `<p>${escHtml(loc(o, 'descripcion'))}</p>` : ''}
     <table>${filas.map(([a, v]) => `<tr><td>${a}</td><td>${v}</td></tr>`).join('')}</table>
-    ${o.cantidad > 1 && !o.cambio ? `<span class="etq">Hay ${o.cantidad} en este cuarto</span> ` : ''}${o.cambio ? `<span class="etq">Modelo de: ${escHtml(o.cambio.cat.cuartoNombre)}</span> ` : ''}${o.origen ? `<span class="etq">${escHtml(o.origen)}</span>` : ''}
-    <div class="nota">Medidas aproximadas del modelo 3D (la caja naranja)${plano ? '; es una superficie plana' : ''}.</div>
+    ${o.cantidad > 1 && !o.cambio ? `<span class="etq">${t('card.count', { n: o.cantidad })}</span> ` : ''}${o.cambio ? `<span class="etq">${escHtml(t('card.modelFrom', { room: loc(o.cambio.cat, 'cuartoNombre') }))}</span> ` : ''}${o.origen ? `<span class="etq">${escHtml(loc(o, 'origen'))}</span>` : ''}
+    <div class="nota">${t('card.note')}${plano ? t('card.flat') : ''}.</div>
     ${htmlEditar(o)}
     ${htmlCambio(o)}`;
   fichaEl.querySelector('.cerrar').addEventListener('click', cerrarFicha);
@@ -548,20 +550,20 @@ function candidatos(o) {
 }
 function htmlCambio(o) {
   if (!o.colocacion) return '';
-  if (!usandoHorneado) return '<div class="cambio"><div class="nota">Para cambiar o mover este objeto, activa <b>Luz Cycles</b>.</div></div>';
+  if (!usandoHorneado) return `<div class="cambio"><div class="nota">${t('swap.needCycles')}</div></div>`;
   const lista = candidatos(o); if (!lista.length && !o.cambio) return '';
   const iguales = fichas.filter((f) => f.clase === o.clase && f.colocacion).length;
   const opciones = (o.cambio ? [{ ...o.base, original: true }] : []).concat(lista);
-  return `<div class="cambio"><b>Cambiar por otro</b>
-    ${iguales > 1 ? `<label class="todos"><input type="checkbox" id="cambiarTodos"> Cambiar los ${iguales} iguales</label>` : ''}
-    ${grupoOpciones(opciones.filter((m) => m.cuarto !== 'galeria'), lista, '')}${grupoOpciones(opciones.filter((m) => m.cuarto === 'galeria'), lista, 'De la galería de objetos')}
-    <div class="nota">Es una prueba visual: no cambia las paredes para caminar y el botón Render sigue usando el original. Al recargar la página vuelve todo como estaba.</div></div>`;
+  return `<div class="cambio"><b>${t('swap.title')}</b>
+    ${iguales > 1 ? `<label class="todos"><input type="checkbox" id="cambiarTodos"> ${t('swap.all', { n: iguales })}</label>` : ''}
+    ${grupoOpciones(opciones.filter((m) => m.cuarto !== 'galeria'), lista, '')}${grupoOpciones(opciones.filter((m) => m.cuarto === 'galeria'), lista, t('swap.gallery'))}
+    <div class="nota">${t('swap.note')}</div></div>`;
 }
 function grupoOpciones(opciones, lista, titulo) {
   if (!opciones.length) return '';
-  return `${titulo ? `<div class="subt">${titulo} (${opciones.length})</div>` : ''}<div class="opciones">${opciones.map((m) => `<button data-i="${m.original ? -1 : lista.indexOf(m)}" title="${escHtml(m.nombre)}">
-      ${m.img ? `<img src="${escHtml(m.img)}" alt="" loading="lazy">` : '<span class="sinimg">?</span>'}<span>${escHtml(m.original ? 'Original' : m.nombre)}</span>
-      ${m.original || m.cuarto === 'galeria' ? '' : `<small>${escHtml(m.cuartoNombre || '')}</small>`}</button>`).join('')}</div>`;
+  return `${titulo ? `<div class="subt">${titulo} (${opciones.length})</div>` : ''}<div class="opciones">${opciones.map((m) => `<button data-i="${m.original ? -1 : lista.indexOf(m)}" title="${escHtml(loc(m, 'nombre'))}">
+      ${m.img ? `<img src="${escHtml(m.img)}" alt="" loading="lazy">` : '<span class="sinimg">?</span>'}<span>${escHtml(m.original ? t('swap.original') : loc(m, 'nombre'))}</span>
+      ${m.original || m.cuarto === 'galeria' ? '' : `<small>${escHtml(loc(m, 'cuartoNombre') || '')}</small>`}</button>`).join('')}</div>`;
 }
 function conectarCambio(o) {
   const lista = candidatos(o), todos = () => fichaEl.querySelector('#cambiarTodos')?.checked;
@@ -570,7 +572,7 @@ function conectarCambio(o) {
     const i = parseInt(b.dataset.i, 10);
     if (i < 0) { objetivo().forEach(restaurar); mostrarFicha(o); return; }
     b.disabled = true; b.classList.add('cargando');
-    try { for (const f of objetivo()) await cambiarObjeto(f, lista[i]); } catch (err) { console.warn(err); aviso('No se pudo cargar ese modelo.'); }
+    try { for (const f of objetivo()) await cambiarObjeto(f, lista[i]); } catch (err) { console.warn(err); aviso(t('swap.loadFailed')); }
     mostrarFicha(o);
   }));
 }
@@ -580,7 +582,7 @@ async function modeloCatalogo(m) {
 }
 async function cambiarObjeto(o, m) {
   const sp = soporte(o);
-  if (!sp) { aviso('Este objeto no se puede separar del resto.'); return; }
+  if (!sp) { aviso(t('swap.cantSeparate')); return; }
   const fuente = await modeloCatalogo(m);
   if (o.cambio) { o.cambio.grupo.removeFromParent(); }
   const obj = fuente.clone(true);
@@ -591,10 +593,10 @@ async function cambiarObjeto(o, m) {
   // con la luz horneada el ambiente está bajo: se compensa para que el modelo no se vea oscuro
   obj.traverse((x) => { if (x.isMesh) for (const mt of [].concat(x.material)) if ('envMapIntensity' in mt) mt.envMapIntensity = 2.2; });
   o.nodoObj.visible = false;
-  if (!o.base) o.base = { nombre: o.nombre, descripcion: o.descripcion, img: o.img, medidas: o.medidas, origen: o.origen };
+  if (!o.base) o.base = { nombre: o.nombre, nombre_en: o.nombre_en, descripcion: o.descripcion, descripcion_en: o.descripcion_en, img: o.img, medidas: o.medidas, origen: o.origen, origen_en: o.origen_en };
   const w = tam.x * k, d = tam.z * k, h = tam.y * k;
   o.cambio = { cat: m, grupo, rel: { c: new THREE.Vector3(0, h / 2 - o.piv, 0), h: [w / 2, d / 2, h / 2], yaw: 0 } };
-  Object.assign(o, { nombre: m.nombre, descripcion: m.descripcion, img: m.img, origen: undefined,
+  Object.assign(o, { nombre: m.nombre, nombre_en: m.nombre_en, descripcion: m.descripcion, descripcion_en: m.descripcion_en, img: m.img, origen: undefined, origen_en: undefined,
     medidas: { ancho: Math.max(w, d), fondo: Math.min(w, d), alto: h, sobrePiso: 0 } });
   seguirMarco(o);
 }
@@ -613,8 +615,8 @@ const historia = [], rehacerPila = [];
 const estadoDe = (o) => ({ o, p: o.soporte.position.clone(), q: o.soporte.quaternion.clone() });
 function guardarHistoria(o) { if (!o?.soporte) return; historia.push(estadoDe(o)); if (historia.length > 200) historia.shift(); rehacerPila.length = 0; actualizarBotonesHistoria(); }
 function aplicarEstado(e) { e.o.soporte.position.copy(e.p); e.o.soporte.quaternion.copy(e.q); seguirMarco(e.o); if (fichaActual === e.o) refrescarEditar(e.o); }
-function deshacer() { const e = historia.pop(); if (!e) { aviso('No hay nada que deshacer.'); return; } rehacerPila.push(estadoDe(e.o)); aplicarEstado(e); actualizarBotonesHistoria(); }
-function rehacer() { const e = rehacerPila.pop(); if (!e) { aviso('No hay nada que rehacer.'); return; } historia.push(estadoDe(e.o)); aplicarEstado(e); actualizarBotonesHistoria(); }
+function deshacer() { const e = historia.pop(); if (!e) { aviso(t('undo.none')); return; } rehacerPila.push(estadoDe(e.o)); aplicarEstado(e); actualizarBotonesHistoria(); }
+function rehacer() { const e = rehacerPila.pop(); if (!e) { aviso(t('redo.none')); return; } historia.push(estadoDe(e.o)); aplicarEstado(e); actualizarBotonesHistoria(); }
 function actualizarBotonesHistoria() {
   const d = fichaEl.querySelector('[data-acc="deshacer"]'), r = fichaEl.querySelector('[data-acc="rehacer"]');
   if (d) d.disabled = !historia.length; if (r) r.disabled = !rehacerPila.length;
@@ -635,13 +637,13 @@ gizmo.addEventListener('objectChange', () => {
 });
 function htmlEditar(o) {
   if (!editable(o)) return '';
-  return `<div class="editar"><b>Mover y girar</b>
-    <div class="fila-editar"><div class="segmentos"><button data-modo="translate" title="Flechas para moverlo">✥ Mover</button><button data-modo="rotate" title="Aros para girarlo">⟳ Girar</button></div>
-      <label class="todos"><input type="checkbox" id="pegado" ${pegado ? 'checked' : ''}> Pegado al piso</label></div>
-    <label class="barrita">Giro <input type="range" id="rGiro" min="-180" max="180" step="1"><span id="vGiro"></span></label>
-    <label class="barrita">Altura <input type="range" id="rAltura" min="-0.5" max="2.5" step="0.01"><span id="vAltura"></span></label>
-    <div class="acciones"><button data-acc="deshacer" title="Ctrl+Z">↶ Deshacer</button><button data-acc="rehacer" title="Ctrl+Y">↷ Rehacer</button><button data-acc="inicio" title="Regresarlo a donde estaba">⟲ A su lugar</button></div>
-    <div class="nota">${vistaActual === 'mapa' ? 'Arrastra el mueble en el plano para moverlo; gíralo con la barrita.' : 'Elige Mover o Girar y arrastra las flechas o los aros que salen sobre el objeto.'} Ctrl+Z deshace, Ctrl+Y rehace.</div></div>`;
+  return `<div class="editar"><b>${t('edit.title')}</b>
+    <div class="fila-editar"><div class="segmentos"><button data-modo="translate" title="${t('edit.move.title')}">${t('edit.move')}</button><button data-modo="rotate" title="${t('edit.rotate.title')}">${t('edit.rotate')}</button></div>
+      <label class="todos"><input type="checkbox" id="pegado" ${pegado ? 'checked' : ''}> ${t('edit.snap')}</label></div>
+    <label class="barrita">${t('edit.turn')} <input type="range" id="rGiro" min="-180" max="180" step="1"><span id="vGiro"></span></label>
+    <label class="barrita">${t('edit.height')} <input type="range" id="rAltura" min="-0.5" max="2.5" step="0.01"><span id="vAltura"></span></label>
+    <div class="acciones"><button data-acc="deshacer" title="Ctrl+Z">${t('edit.undo')}</button><button data-acc="rehacer" title="Ctrl+Y">${t('edit.redo')}</button><button data-acc="inicio" title="${t('edit.reset.title')}">${t('edit.reset')}</button></div>
+    <div class="nota">${vistaActual === 'mapa' ? t('edit.noteMap') : t('edit.noteScene')} ${t('edit.keys')}</div></div>`;
 }
 function refrescarEditar(o) {
   const g = fichaEl.querySelector('#rGiro'); if (!g || !o.soporte) return;
@@ -693,9 +695,9 @@ addEventListener('keydown', (e) => {
 });
 function elegirEn(nx, ny) {
   if (vistaActual !== 'escena' || renderActivo || !modelo) return;
-  if (!fichas) { aviso('Este proyecto no tiene fichas de objetos.'); return; }
+  if (!fichas) { aviso(t('pick.noCards')); return; }
   const o = buscarObjeto(nx, ny);
-  if (o) mostrarFicha(o); else { cerrarFicha(); aviso('Ahí no hay un objeto identificado.'); }
+  if (o) mostrarFicha(o); else { cerrarFicha(); aviso(t('pick.none')); }
 }
 let bloqueoDesde = 0;
 document.addEventListener('pointerlockchange', () => { if (document.pointerLockElement === lienzo) bloqueoDesde = performance.now(); });
@@ -743,8 +745,8 @@ async function cargarCuarto(c) {
   escalaVel = c.exterior ? 6 : 1;
   if (vistaActual === 'escena') { camera.near = 0.05; camera.far = c.exterior ? 1500 : 300; camera.updateProjectionMatrix(); }
   carga.classList.remove('oculta');
-  cargaTitulo.textContent = c.nombre;
-  progreso(0, 'Descargando modelo…');
+  cargaTitulo.textContent = loc(c, 'nombre');
+  progreso(0, t('load.downloading'));
   if (modelo) { scene.remove(modelo); liberar(modelo); modelo = null; }
   let gltf;
   usandoHorneado = !!(luzHorneada && c.horneado);
@@ -752,10 +754,10 @@ async function cargarCuarto(c) {
   actualizarBotonesLuz();
   try {
     gltf = await loader.loadAsync(archivo, (e) => {
-      if (e.total) progreso(0.85 * (e.loaded / e.total), `Descargando modelo… ${(e.loaded / 1048576).toFixed(1)} / ${(e.total / 1048576).toFixed(1)} MB`);
+      if (e.total) progreso(0.85 * (e.loaded / e.total), t('load.downloadingMB', { a: (e.loaded / 1048576).toFixed(1), b: (e.total / 1048576).toFixed(1) }));
     });
   } catch (err) {
-    progreso(0, `No se pudo cargar ${archivo}. ¿Abriste la página con servir.bat?`);
+    progreso(0, t('load.failed', { file: archivo }));
     console.warn('Error al cargar', archivo, err);
     return;
   }
@@ -774,7 +776,7 @@ async function cargarCuarto(c) {
   });
   scene.add(modelo);
   modelo.visible = vistaActual === 'escena';
-  progreso(0.9, 'Preparando paredes para caminar…');
+  progreso(0.9, t('load.walls'));
   await pausa();
   mapa = await construirMapa(modelo);
   pisoY = mapa.piso;
@@ -832,10 +834,10 @@ function ponerVista(v) {
     if (abierta && fichaActual === abierta) mostrarFicha(abierta);
   } else if (v === 'modelos') {
     luzEstudio();
-    if (!sueltos.length) vacio('Este proyecto no tiene modelos sueltos.');
+    if (!sueltos.length) vacio(t('empty.models'));
     else if (iSuelto < 0) verSuelto(0);
   } else if (v === 'mapa') {
-    if (!(actual.mapas || []).length) vacio('Este proyecto no tiene mapa.');
+    if (!(actual.mapas || []).length) vacio(t('empty.map'));
     else verMapa(iMapa);
     if (abierta && fichaActual === abierta) mostrarFicha(abierta);
   }
@@ -852,10 +854,10 @@ function luzEstudio() {
 function dibujarTiras() {
   const t = $('tiras'); t.innerHTML = '';
   sueltos.forEach((m, i) => {
-    const b = document.createElement('button'); b.title = m.nombre;
+    const b = document.createElement('button'); b.title = loc(m, 'nombre');
     b.innerHTML = (m.miniatura ? `<img loading="lazy" alt="">` : '<div class="sinmini">◆</div>') + '<span></span>';
     if (m.miniatura) b.querySelector('img').src = m.miniatura;
-    b.querySelector('span').textContent = m.nombre;
+    b.querySelector('span').textContent = loc(m, 'nombre');
     b.onclick = () => verSuelto(i);
     t.appendChild(b);
   });
@@ -865,13 +867,13 @@ async function verSuelto(i) {
   if (!sueltos.length) return;
   i = (i + sueltos.length) % sueltos.length; iSuelto = i;
   const m = sueltos[i], yo = ++cargaSuelto;
-  $('modeloNombre').textContent = m.nombre; $('modeloCuenta').textContent = `${i + 1} / ${sueltos.length}`;
+  $('modeloNombre').textContent = loc(m, 'nombre'); $('modeloCuenta').textContent = `${i + 1} / ${sueltos.length}`;
   const botones = $('tiras').children;
   for (let k = 0; k < botones.length; k++) botones[k].classList.toggle('activo', k === i);
   botones[i]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
   guardarUrl();
   let gltf;
-  try { gltf = await loader.loadAsync(m.archivo); } catch (err) { aviso(`No se pudo cargar ${m.archivo}`); console.warn(err); return; }
+  try { gltf = await loader.loadAsync(m.archivo); } catch (err) { aviso(t('load.fileFailed', { file: m.archivo })); console.warn(err); return; }
   if (yo !== cargaSuelto) { liberar(gltf.scene); return; } // ya se pidió otro
   if (sueltoObj) { scene.remove(sueltoObj); liberar(sueltoObj); }
   sueltoObj = gltf.scene; sueltoObj.visible = vistaActual === 'modelos';
@@ -892,10 +894,10 @@ const esTecho = (o) => /^(ceiling|techo)$/.test(o.clase);
 const esVentana = (o) => /^(window|persiana|vidrio)/.test(o.clase);
 const esPuerta = (o) => /^(door|puerta)/.test(o.clase);
 function listaMapas() {
-  const orig = (actual.mapas || []).map((m) => ({ ...m }));
+  const orig = (actual.mapas || []).map((m) => ({ ...m, nombre: loc(m, 'nombre') }));
   if (!(fichas && fichasDe === actual.id)) return orig;
-  for (const m of orig) m.nombre += ' (foto original)';
-  return [{ nombre: 'Planta 3D (en vivo)', vivo: 'planta' }, { nombre: 'Plano de objetos (en vivo)', vivo: 'plano' }, ...orig];
+  for (const m of orig) m.nombre += t('map.origPhoto');
+  return [{ nombre: t('map.liveFloor'), vivo: 'planta' }, { nombre: t('map.livePlan'), vivo: 'plano' }, ...orig];
 }
 function dibujarMapas() {
   const d = $('mapaBotones'); d.innerHTML = '';
@@ -914,7 +916,7 @@ async function verMapa(i) {
   const img = $('mapaImg'), sv = $('mapaSvg');
   if (!m.vivo) {
     tipoMapa = null; sv.innerHTML = ''; sv.style.display = 'none'; img.style.display = ''; img.src = m.archivo;
-    $('mapaNota').textContent = 'Toca la imagen para acercar o alejar.';
+    $('mapaNota').textContent = t('map.tapZoom');
     return;
   }
   img.style.display = 'none'; img.removeAttribute('src'); sv.style.display = '';
@@ -922,8 +924,8 @@ async function verMapa(i) {
   if (tipo === 'planta') { foto = renderPlanta(L); if (!foto) tipo = 'plano'; }
   tipoMapa = tipo; fotoPlanta = foto; limMapa = L;
   redibujarMapa();
-  $('mapaNota').innerHTML = (m.vivo === 'planta' && !foto ? 'Para ver la planta 3D abre primero <b>Todo junto</b>. Mientras, este es el plano. ' : '')
-    + '<span class="lm naranja"></span> movido o cambiado (punteado: donde estaba) · <span class="lm azul"></span> dónde estás · toca un mueble para ver su ficha y moverlo (arrástralo), o el fondo para acercar.';
+  $('mapaNota').innerHTML = (m.vivo === 'planta' && !foto ? t('map.openSceneFirst') : '')
+    + t('map.legend');
   ajustarSvg(); requestAnimationFrame(ajustarSvg);
 }
 function esquinas(caja, extra = 0) {
@@ -1001,12 +1003,12 @@ function svgMapa(tipo, foto, L = limitesPlano()) {
   for (const { o } of muebles) if (movido(o) && o.caja0) t.push(`<polygon points="${pts(esquinas(o.caja0))}" class="fantasma"/>`);
   // una etiqueta por nombre, en el más grande
   const etiquetaEn = new Map();
-  for (const { o, i } of muebles) { const a = o.caja.h[0] * o.caja.h[1], e = etiquetaEn.get(o.nombre); if (!e || a > e.a) etiquetaEn.set(o.nombre, { i, a }); }
+  for (const { o, i } of muebles) { const a = o.caja.h[0] * o.caja.h[1], e = etiquetaEn.get(loc(o, 'nombre')); if (!e || a > e.a) etiquetaEn.set(loc(o, 'nombre'), { i, a }); }
   const textos = [];
   for (const { o, i } of muebles) {
     const mov = movido(o), alto = o.medidas.sobrePiso > 1.2, { c, h } = o.caja;
     const clase = ['caja', mov ? 'mov' : '', alto ? 'alto' : '', esVentana(o) ? 'ventana' : '', esPuerta(o) ? 'puerta' : ''].filter(Boolean).join(' ');
-    let g = `<g class="mueble${o === fichaActual ? ' sel' : ''}${editable(o) ? ' movible' : ''}" data-i="${i}"><title>${escHtml(o.nombre)}</title><polygon points="${pts(esquinas(o.caja))}" class="${clase}${foto ? ' sobre' : ''}"/>`;
+    let g = `<g class="mueble${o === fichaActual ? ' sel' : ''}${editable(o) ? ' movible' : ''}" data-i="${i}"><title>${escHtml(loc(o, 'nombre'))}</title><polygon points="${pts(esquinas(o.caja))}" class="${clase}${foto ? ' sobre' : ''}"/>`;
     const lado = Math.min(2 * h[0], 2 * h[1]) * S * 0.85, conImg = !foto && o.img && !alto && o.medidas.alto > 0.05 && lado > 12 && !esVentana(o) && !esPuerta(o);
     if (conImg) { const s = Math.min(lado, 80); g += `<image href="${escHtml(o.img)}" x="${(+X(c[0]) - s / 2).toFixed(1)}" y="${(+Y(c[1]) - s / 2).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}" preserveAspectRatio="xMidYMid meet"/>`; }
     if (o.colocacion && (!foto || mov)) {
@@ -1016,9 +1018,9 @@ function svgMapa(tipo, foto, L = limitesPlano()) {
       g += `<polygon points="${pts([p(ext + 0.09, 0), p(ext + 0.01, 0.06), p(ext + 0.01, -0.06)])}" class="frente${mov ? ' mov' : ''}"/>`;
     }
     g += '</g>'; t.push(g);
-    if (!foto && etiquetaEn.get(o.nombre)?.i === i && !esVentana(o)) {
+    if (!foto && etiquetaEn.get(loc(o, 'nombre'))?.i === i && !esVentana(o)) {
       const ty = conImg ? +Y(c[1]) + Math.min(lado, 80) / 2 + 11 : +Y(c[1]) + 4;
-      textos.push(`<text x="${X(c[0])}" y="${ty.toFixed(1)}" class="etq">${escHtml(o.nombre.toLowerCase())}</text>`);
+      textos.push(`<text x="${X(c[0])}" y="${ty.toFixed(1)}" class="etq">${escHtml(loc(o, 'nombre').toLowerCase())}</text>`);
     }
   }
   t.push(...textos);
@@ -1096,7 +1098,7 @@ $('mapaSvg').addEventListener('pointercancel', () => { arrastre = null; pedirMap
 // Tocar un mueble en el mapa: vuelve a Todo junto mirando hacia él y abre su ficha.
 function abrirDesdeMapa(o) {
   if (!o) return;
-  if (escenaDe !== actual.id) { aviso('Abre primero Todo junto para ver ese mueble.'); return; }
+  if (escenaDe !== actual.id) { aviso(t('map.openSceneForItem')); return; }
   if (camEscena) {
     const p = camEscena.pos, c = o.caja.c, dx = c[0] - p.x, dz = -c[1] - p.z, dy = c[2] - p.y;
     camEscena.yaw = Math.atan2(-dx, -dz); camEscena.pitch = Math.max(-1.2, Math.min(0.6, Math.atan2(dy, Math.hypot(dx, dz))));
@@ -1131,12 +1133,12 @@ function dibujarVistas() {
   vistas.forEach((v, i) => {
     const propia = i >= vistasBase.length, fila = document.createElement('div'); fila.className = 'fila-vista';
     const b = document.createElement('button');
-    b.innerHTML = `<span class="num">${i < 9 ? i + 1 : ''}</span>`; b.append(v.nombre || `Vista ${i + 1}`);
-    b.title = i < 9 ? `Tecla ${i + 1}` : '';
+    b.innerHTML = `<span class="num">${i < 9 ? i + 1 : ''}</span>`; b.append(loc(v, 'nombre') || t('view.n', { n: i + 1 }));
+    b.title = i < 9 ? t('views.key', { n: i + 1 }) : '';
     b.onclick = () => { cerrarMenuVistas(); irAVista(i); lienzo.focus(); };
     fila.appendChild(b);
     if (propia) {
-      const x = document.createElement('button'); x.textContent = '✕'; x.title = 'Quitar esta vista';
+      const x = document.createElement('button'); x.textContent = '✕'; x.title = t('views.remove');
       x.onclick = (e) => { e.stopPropagation(); const g = vistasGuardadas(); g.splice(i - vistasBase.length, 1); localStorage.setItem(claveVistas(), JSON.stringify(g)); ponerVistas(vistasBase); };
       fila.appendChild(x);
     }
@@ -1155,11 +1157,11 @@ lienzo.addEventListener('touchstart', cerrarMenuVistas, { passive: true });
 $('btnGuardarVista').onclick = () => {
   const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
   const r = (v) => Math.round(v * 100) / 100, p = camera.position, g = vistasGuardadas();
-  const nombre = (prompt('Nombre de la vista:', `Mi vista ${g.length + 1}`) || '').trim();
+  const nombre = (prompt(t('views.prompt'), t('views.mine', { n: g.length + 1 })) || '').trim();
   if (!nombre) return;
   g.push({ nombre, pos: [r(p.x), r(p.y), r(p.z)], mirar: [r(p.x + dir.x * 2), r(p.y + dir.y * 2), r(p.z + dir.z * 2)] });
   localStorage.setItem(claveVistas(), JSON.stringify(g)); ponerVistas(vistasBase);
-  aviso(`Vista guardada: ${nombre} (tecla ${vistas.length <= 9 ? vistas.length : '—'})`);
+  aviso(t('views.saved', { name: nombre, key: vistas.length <= 9 ? vistas.length : '—' }));
 };
 
 function anguloDesde(pos, mirar) {
@@ -1191,15 +1193,15 @@ function ponerModo(m) {
   if (m === 'caminar' && mapa) {
     const [x, z] = lugarLibre(camera.position.x, camera.position.z);
     transicion = { t: 0, desde: camera.position.clone(), hasta: new THREE.Vector3(x, pisoY + ALTURA_OJOS, z), yaw0: yaw, yaw1: yaw, p0: pitch, p1: pitch };
-    aviso('Modo caminar: a 1.6 m, sin atravesar paredes');
-  } else aviso('Modo volar: Q/E para bajar y subir');
+    aviso(t('mode.walk'));
+  } else aviso(t('mode.fly'));
 }
 document.body.classList.add('volar');
 $('btnVolar').onclick = () => { ponerModo('volar'); lienzo.focus(); };
 $('btnCaminar').onclick = () => { ponerModo('caminar'); lienzo.focus(); };
 $('luz').oninput = () => aplicarExposicion();
 $('btnHorneado').onclick = () => { luzHorneada = !luzHorneada; escenaDe = null; cargarCuarto(actual); lienzo.focus(); };
-$('btnAO').onclick = () => { aoForzado = !aoEnUso(); actualizarBotonesLuz(); aviso(aoEnUso() ? 'Sombras suaves activadas' : 'Sombras suaves desactivadas'); lienzo.focus(); };
+$('btnAO').onclick = () => { aoForzado = !aoEnUso(); actualizarBotonesLuz(); aviso(aoEnUso() ? t('ao.on') : t('ao.off')); lienzo.focus(); };
 
 // ---------- Teclado y mouse ----------
 addEventListener('keydown', (e) => {
@@ -1258,7 +1260,7 @@ function copiarVista() {
   const txt = JSON.stringify({ nombre: 'Nueva vista', pos: [r(p.x), r(p.y), r(p.z)], mirar: [r(p.x + dir.x * 2), r(p.y + dir.y * 2), r(p.z + dir.z * 2)] });
   navigator.clipboard?.writeText(txt).catch(() => {});
   console.info('Vista actual (pégala en "vistas" de cuartos.json):', txt);
-  aviso(`Vista copiada: ${txt}`, 5000);
+  aviso(t('views.copied', { txt }), 5000);
 }
 
 // ---------- Táctil: joystick + arrastrar para mirar ----------
@@ -1377,6 +1379,26 @@ addEventListener('resize', () => {
 });
 composer.setPixelRatio(renderer.getPixelRatio());
 
+// ---------- Language (EN | ES) ----------
+// Switching re-renders every text in place; the 3D scene is not reloaded.
+for (const b of document.querySelectorAll('#idioma [data-lang]')) b.onclick = () => { setLang(b.dataset.lang); b.blur(); };
+onLangChange(() => {
+  for (const o of selCuarto.options) { const c = lista.find((x) => x.id === o.value); if (c) o.textContent = loc(c, 'nombre'); }
+  if (!actual) return;
+  if (!carga.classList.contains('oculta')) cargaTitulo.textContent = loc(actual, 'nombre');
+  dibujarVistas();
+  dibujarTiras();
+  if (iSuelto >= 0 && sueltos[iSuelto]) {
+    $('modeloNombre').textContent = loc(sueltos[iSuelto], 'nombre');
+    const botones = $('tiras').children;
+    for (let k = 0; k < botones.length; k++) botones[k].classList.toggle('activo', k === iSuelto);
+  }
+  dibujarMapas();
+  if (vistaActual === 'modelos' && !sueltos.length) vacio(t('empty.models'));
+  if (vistaActual === 'mapa') { if ((actual.mapas || []).length) verMapa(iMapa); else vacio(t('empty.map')); }
+  if (fichaActual && vistaActual !== 'modelos') mostrarFicha(fichaActual);
+});
+
 // ---------- Inicio ----------
 // Para pruebas / depuración desde la consola.
 window.visor = { camera, scene, get modelo() { return modelo; }, get modo() { return modo; }, ponerModo, irAVista, get mapa() { return mapa; }, get vistas() { return vistas; }, teclas, cabe, get fichas() { return fichas; }, get catalogo() { return catalogo; }, soporte, cambiarObjeto, ponerVista, cargar: (id) => cargarCuarto(lista.find((c) => c.id === id)) };
@@ -1386,12 +1408,12 @@ window.visor = { camera, scene, get modelo() { return modelo; }, get modo() { re
     const r = await fetch('cuartos.json' + VER, { cache: 'no-cache' });
     lista = (await r.json()).cuartos;
   } catch (err) {
-    cargaTitulo.textContent = 'No se pudo leer cuartos.json';
-    progreso(0, 'Abre la página desde un servidor local (serve.bat o python -m http.server), no con doble clic en el archivo.');
+    cargaTitulo.textContent = t('init.noJson');
+    progreso(0, t('init.serve'));
     return;
   }
   for (const c of lista) {
-    const o = document.createElement('option'); o.value = c.id; o.textContent = c.nombre; selCuarto.appendChild(o);
+    const o = document.createElement('option'); o.value = c.id; o.textContent = loc(c, 'nombre'); selCuarto.appendChild(o);
   }
   selCuarto.onchange = () => { elegirProyecto(lista.find((c) => c.id === selCuarto.value)); selCuarto.blur(); };
   const q = new URLSearchParams(location.search);

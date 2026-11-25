@@ -16,7 +16,7 @@ This project **does not redistribute any model weights**. Each user downloads th
 | SpatialLM 1.1 | optional second opinion on the room layout | CC-BY-NC-4.0 | ⛔ | [HF](https://huggingface.co/manycore-research/SpatialLM1.1-Qwen-0.5B) |
 | LingBot-Map | optional video / multi-photo alignment | code Apache-2.0; weights licence not stated explicitly | ⚠️ | [GitHub](https://github.com/Robbyant/lingbot-map) |
 | MapAnything | optional multi-photo alignment | Apache-2.0 variant (check the checkpoint you download) | ⚠️ | [GitHub](https://github.com/facebookresearch/map-anything) |
-| Hi3D | optional mesh refinement (`refine_hi3d.py`) | not reviewed | ⚠️ check before use | — |
+| Hi3D 1.0 (ComfyUI nodes + int8 weights) | optional mesh refinement (`refine_hi3d.py`) | Hi3D Open License Agreement 1.0 | ⚠️ allowed; a paid service must show "Powered by Hi3D 1.0"; above 200,000 monthly users or USD 1M monthly revenue you need a separate licence. Generated meshes are free to use | see the `LICENSE` file shipped with the Hi3D nodes |
 
 ### Commercial use without the ⛔ models
 

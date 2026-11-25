@@ -5,7 +5,7 @@
 #
 # Usage:  python -I photo_to_map.py <photo> [output_folder] [--port 8188] [--fov DEGREES] [--symbolic] [--measure "..."] [--no-3d]
 #         python -I photo_to_map.py <folder_with_map> --measure "1-2=2.5"     (only fixes the scale and redraws)
-#   output_folder: by default escenas\<photo_name>
+#   output_folder: by default out\<photo_name>
 #   --fov:       horizontal lens angle in degrees if you know it (read automatically from EXIF when present)
 #   --symbolic:  each object as a box with its size, number and arrow (fast, no TRELLIS)
 #   --measure:   a measurement you know, to fix the scale of the whole map:
@@ -28,6 +28,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 BLENDER = os.environ.get("BLENDER", r"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe")
 PY = os.environ.get("COMFY_PYTHON", os.path.join(os.environ.get("LOCALAPPDATA", ""), r"Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe"))
+# Optional extras: used only when installed (see README, "Configuration")
+ORIENT_DIR = os.environ.get("ORIENT_ANYTHING_DIR", "orient-anything-v2")
+GALLERY_DB = os.path.join(os.environ.get("GALLERY_DIR", os.path.join(ROOT, "gallery")), "huellas.npz")
 PYV = os.environ.get("COMFY_VENV_PYTHON", os.path.join(os.environ.get("LOCALAPPDATA", ""), r"Comfy-Desktop\ComfyUI-Installs\ComfyUI\ComfyUI\.venv\Scripts\python.exe"))
 
 
@@ -82,7 +85,7 @@ def main():
         summary(out, True, t0)
         return
     photo = os.path.abspath(args[0])
-    out = os.path.abspath(args[1]) if len(args) > 1 else os.path.join(ROOT, "escenas", os.path.splitext(os.path.basename(photo))[0])
+    out = os.path.abspath(args[1]) if len(args) > 1 else os.path.join(ROOT, "out", os.path.splitext(os.path.basename(photo))[0])
     if os.path.exists(os.path.join(out, "map.json")):
         sys.exit(f"There is already a map in {out}. Use another output folder (nothing is overwritten).\n"
                  f"To only fix its scale: python -I photo_to_map.py \"{out}\" --measure \"1-2=2.5\"")
@@ -91,8 +94,11 @@ def main():
 
     step("Map: what is there, where and how big (Qwen3-VL + SAM 3 + MoGe-2)",
          [PY, "-I", os.path.join(HERE, "detect_objects.py"), photo, out, port] + (["--fov", fov] if fov else []), out)
-    step("Facing: which way each object looks (Orient Anything V2)", [PYV, "-I", os.path.join(HERE, "orientation.py"), out], out)
-    if not symb:
+    if os.path.exists(os.path.join(ORIENT_DIR, "vision_tower.py")):
+        step("Facing: which way each object looks (Orient Anything V2)", [PYV, "-I", os.path.join(HERE, "orientation.py"), out], out)
+    else:
+        print("- Facing: Orient Anything V2 not installed (ORIENT_ANYTHING_DIR); using the direction from the geometry")
+    if not symb and os.path.exists(GALLERY_DB):
         step("Gallery: use an existing model if there is an identical one (DINOv3)", [PYV, os.path.join(HERE, "gallery_match.py"), out], out)
     if measure:
         step(f"Scale from your measurement ({measure})", [PY, "-I", os.path.join(HERE, "fix_scale.py"), out, "--measure", measure], out)

@@ -4,7 +4,9 @@ Turn ordinary photos or a short video of a room into a **measured floor plan** a
 
 *[Leer en español](README.es.md)*
 
-![Hotel room rebuilt from a phone video, in the web viewer](docs/img/viewer_hotel.jpg)
+![Hotel room rebuilt in 3D from a 40-second phone video](docs/img/hotel_orbit.gif)
+
+![The same room in the web viewer](docs/img/viewer_hotel.jpg)
 
 What it does, step by step:
 
@@ -19,7 +21,7 @@ What it does, step by step:
 | Folder | What it is |
 |---|---|
 | `pipeline/` | The Python scripts. The entry point is `photo_to_map.py`; `CONVENTIONS.md` documents every output file and JSON key. |
-| `viewer/` | A static three.js viewer (UI in Spanish) with three example rooms. You can fly or walk through them, open each 3D model separately, and see the plans. |
+| `viewer/` | A static three.js viewer (English and Spanish) with three example rooms. You can fly or walk through them, open each 3D model separately, and see the plans. |
 | `demo/` | A step-by-step web demo of the process (UI in English). It replays a precomputed hotel-room example and does not process your own video. |
 
 **Model weights are not included.** Download each model from its official page and accept its licence (see [MODELS.md](MODELS.md)).
@@ -35,13 +37,22 @@ What it does, step by step:
 
 ```powershell
 # 1. start ComfyUI (it listens on port 8188 by default)
-# 2. run the pipeline on one photo
-& "$env:LOCALAPPDATA\Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe" -I pipeline\photo_to_map.py my_room.jpg out\my_room --symbolic
-# 3. optional: fix the scale with one real measurement (object 1 is 1.40 m wide)
-& "$env:LOCALAPPDATA\Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe" -I pipeline\photo_to_map.py out\my_room --measure "1:width=1.40"
+# 2. run the pipeline on the example photo (about a minute on an RTX 4090)
+& "$env:LOCALAPPDATA\Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe" -I pipeline\photo_to_map.py examples\hotel_room.jpg out\hotel_room --symbolic
+# 3. optional: fix the scale with one real measurement
+#    (here object 3, the desk, is 0.75 m tall; check the numbers in guides.png first, they can change between runs)
+& "$env:LOCALAPPDATA\Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe" -I pipeline\photo_to_map.py out\hotel_room --measure "3=0.75"
 ```
 
-Open `out\my_room\plan.png` and `guides.png` to see the result. Remove `--symbolic` to generate real 3D models instead of boxes; this is slower, about a minute per object.
+Open `out\hotel_room\plan.png` and `guides.png` to see the result. This is what the example gives:
+
+| Objects found and measured | Top-down plan |
+|---|---|
+| <img src="docs/img/example_guides.jpg" width="300"> | <img src="docs/img/example_plan.jpg" width="520"> |
+
+The desk comes out at 73 cm tall and the armchair at 73 cm, without any measurement given. It also finds small things like the sneakers and the bags on the floor. Remove `--symbolic` to generate real 3D models instead of boxes; this is slower, about a minute per object.
+
+Optional models are used only when they are installed. Without Orient Anything V2 (`ORIENT_ANYTHING_DIR`), the direction each object faces comes from the geometry. Without a gallery (`GALLERY_DIR`), every object is generated with TRELLIS.2.
 
 ### See the examples
 
@@ -60,7 +71,7 @@ The defaults match a standard ComfyUI Desktop install on Windows. Override them 
 | `COMFY_PYTHON`, `COMFY_VENV_PYTHON` | `photo_to_map.py` | ComfyUI Desktop pythons |
 | `BLENDER` | `photo_to_map.py` | `C:\Program Files\Blender Foundation\Blender 5.3\blender.exe` |
 | `GALLERY_DIR` | gallery matching | `gallery\` next to `pipeline\` (not included; optional) |
-| `ORIENT_ANYTHING_DIR` | `orientation.py`, `vggt_align.py` | `orient-anything-v2` |
+| `ORIENT_ANYTHING_DIR` | `orientation.py`, `vggt_align.py` (optional; non-commercial) | `orient-anything-v2` |
 | `SPATIALLM_DIR` | `run_spatiallm.py` (optional) | `spatiallm` |
 | `LINGBOT_DIR`, `LINGBOT_WEIGHTS`, `LINGBOT_PYTHON`, `MAPANYTHING_PYTHON` | multi-view aligners (optional) | — |
 

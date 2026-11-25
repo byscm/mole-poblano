@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo to 3D room</title>
+<meta name="description" content="Turn photos or a short video of a room into a measured floor plan and a walkable 3D scene, fully local with ComfyUI and Blender.">
+<style>
+  :root { --bg: #f6f5f2; --card: #fff; --text: #1d1d1b; --muted: #66655f; --accent: #b9812a; --line: #e2dfd8; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15171b; --card: #1f2227; --text: #f2f2f0; --muted: #a9acb2; --accent: #e8b04b; --line: #2e3238; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; }
+  p.lead { color: var(--muted); font-size: 18px; margin: 0 0 24px; }
+  img.hero { width: 100%; border-radius: 12px; border: 1px solid var(--line); display: block; background: #888; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 24px 0; }
+  a.card { display: block; padding: 18px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); color: inherit; text-decoration: none; }
+  a.card:hover { border-color: var(--accent); }
+  a.card b { display: block; font-size: 18px; margin-bottom: 4px; }
+  a.card span { color: var(--muted); font-size: 14px; }
+  ol { padding-left: 20px; } li { margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; margin-top: 40px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Photo to 3D room</h1>
+  <p class="lead">Photos or a short phone video of a room become a measured floor plan and a walkable 3D scene, running entirely on your own GPU with ComfyUI and Blender.</p>
+  <img class="hero" src="docs/img/hotel_orbit.gif" alt="Hotel room rebuilt in 3D from a phone video">
+
+  <div class="cards">
+    <a class="card" href="viewer/"><b>3D viewer →</b><span>Walk or fly through three example rooms, open every 3D model and see the plans.</span></a>
+    <a class="card" href="demo/"><b>Step-by-step demo →</b><span>See how a phone video becomes frames, depth, a floor plan and 3D models.</span></a>
+    <a class="card" href="https://github.com/" id="repo"><b>Source code →</b><span>Pipeline scripts, setup guide and model licences.</span></a>
+  </div>
+
+  <h2>How it works</h2>
+  <ol>
+    <li>Finds the floor, walls and ceiling, and the depth of every pixel.</li>
+    <li>Cuts out, names and measures every piece of furniture, and the direction it faces.</li>
+    <li>Draws a top-down plan with sizes and distances. One real measurement fixes the scale.</li>
+    <li>Builds each object in 3D and places it in Blender with the same camera as the photo.</li>
+    <li>Joins several photos or video frames into one room.</li>
+  </ol>
+
+  <footer>Code under GPL-3.0. Model weights are not included and some are non-commercial; see MODELS.md. Built with DINOv3.</footer>
+</main>
+<script>
+  // On GitHub Pages (<user>.github.io/<repo>/) point the source link at the repository.
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const repo = location.pathname.split('/').filter(Boolean)[0];
+  if (m && repo) document.getElementById('repo').href = `https://github.com/${m[1]}/${repo}`;
+</script>
+</body>
+</html>

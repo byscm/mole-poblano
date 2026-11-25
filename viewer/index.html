@@ -117,6 +117,9 @@
   #mapaSvg .escala line { stroke: #111; stroke-width: 4; } #mapaSvg .escala text { font-size: 12px; text-anchor: middle; fill: #111; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
   #vacio { position: fixed; left: 50%; top: 45%; transform: translate(-50%, -50%); padding: 14px 18px; display: none; text-align: center; }
   #barra { z-index: 2; }
+  /* Language toggle (EN | ES): right end of the top row on desktop, next to the project menu on phones */
+  #idioma { order: 1; margin-left: auto; flex: none; }
+  #idioma button { padding: 6px 9px; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
   @media (max-width: 700px) {
     body.v-modelos #ayuda { display: none; }
     #mapaVista { padding-top: 112px; }
@@ -128,6 +131,8 @@
     .seccion .tit { display: none; }
     .seccion { padding: 2px; }
     #luzgrupo { display: none; }
+    #selCuarto { flex: 1 1 0; min-width: 0; }
+    #idioma { order: 0; margin-left: 0; }
   }
   /* Render de esta vista */
   #renderPanel { left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); padding: 10px 14px; display: none;
@@ -190,86 +195,87 @@
 <div id="barra" class="panel">
   <!-- Nivel 1: proyecto y secciones -->
   <div class="fila principal">
-    <select id="selCuarto" aria-label="Proyecto"></select>
+    <select id="selCuarto" aria-label="Proyecto" data-i18n-aria="project"></select>
+    <div class="segmentos" id="idioma" role="group" aria-label="Idioma" data-i18n-aria="lang.label"><button data-lang="en" lang="en" title="English">EN</button><button data-lang="es" lang="es" title="Español">ES</button></div>
     <div class="segmentos grande" id="pestanas">
-      <button data-vista="escena" class="activo" title="La escena completa, para recorrerla">Todo junto</button>
-      <button data-vista="modelos" title="Cada modelo 3D por separado">Modelos</button>
-      <button data-vista="mapa" title="Planos y vista desde arriba">Mapa</button>
+      <button data-vista="escena" class="activo" title="La escena completa, para recorrerla" data-i18n="tab.scene" data-i18n-title="tab.scene.title">Todo junto</button>
+      <button data-vista="modelos" title="Cada modelo 3D por separado" data-i18n="tab.models" data-i18n-title="tab.models.title">Modelos</button>
+      <button data-vista="mapa" title="Planos y vista desde arriba" data-i18n="tab.map" data-i18n-title="tab.map.title">Mapa</button>
     </div>
   </div>
   <!-- Nivel 2: herramientas de la escena, por grupos -->
   <div class="fila herramientas solo-escena">
     <div class="seccion" id="secVistas">
-      <span class="tit">Vistas</span>
-      <button id="btnVistas" aria-haspopup="true" aria-expanded="false" title="Puntos de vista guardados (teclas 1–9)">Vistas ▾</button>
+      <span class="tit" data-i18n="sec.views">Vistas</span>
+      <button id="btnVistas" aria-haspopup="true" aria-expanded="false" title="Puntos de vista guardados (teclas 1–9)" data-i18n="views.button" data-i18n-title="views.button.title">Vistas ▾</button>
       <div id="menuVistas" class="panel desplegable">
         <div id="vistas"></div>
         <div id="misVistas"></div>
-        <button id="btnGuardarVista" class="guardar">＋ Guardar esta vista</button>
+        <button id="btnGuardarVista" class="guardar" data-i18n="views.save">＋ Guardar esta vista</button>
       </div>
     </div>
     <div class="seccion">
-      <span class="tit">Moverse</span>
+      <span class="tit" data-i18n="sec.move">Moverse</span>
       <div class="segmentos">
-        <button id="btnVolar" class="activo" title="Volar libremente (tecla F)">Volar</button>
-        <button id="btnCaminar" title="Caminar a 1.6 m sin atravesar paredes (tecla C)">Caminar</button>
+        <button id="btnVolar" class="activo" title="Volar libremente (tecla F)" data-i18n="fly" data-i18n-title="fly.title">Volar</button>
+        <button id="btnCaminar" title="Caminar a 1.6 m sin atravesar paredes (tecla C)" data-i18n="walk" data-i18n-title="walk.title">Caminar</button>
       </div>
     </div>
     <div class="seccion">
-      <span class="tit">Luz</span>
-      <button id="btnHorneado" title="Usar la luz horneada en Blender/Cycles (se ve como los renders) o luz en vivo">Luz Cycles</button>
-      <button id="btnAO" title="Sombras suaves en rincones y debajo de los muebles (oclusión ambiental)">Sombras</button>
-      <span id="luzgrupo"><input id="luz" type="range" min="0.4" max="2.2" step="0.05" value="1.0" aria-label="Intensidad de la luz" title="Intensidad de la luz"></span>
+      <span class="tit" data-i18n="sec.light">Luz</span>
+      <button id="btnHorneado" title="Usar la luz horneada en Blender/Cycles (se ve como los renders) o luz en vivo" data-i18n="baked" data-i18n-title="baked.title">Luz Cycles</button>
+      <button id="btnAO" title="Sombras suaves en rincones y debajo de los muebles (oclusión ambiental)" data-i18n="ao" data-i18n-title="ao.title">Sombras</button>
+      <span id="luzgrupo"><input id="luz" type="range" min="0.4" max="2.2" step="0.05" value="1.0" aria-label="Intensidad de la luz" title="Intensidad de la luz" data-i18n-aria="light.intensity" data-i18n-title="light.intensity"></span>
     </div>
     <div class="seccion" id="secRender">
-      <button id="btnRender" title="Render con luz realista desde esta vista (solo en esta PC)">Render</button>
+      <button id="btnRender" title="Render con luz realista desde esta vista (solo en esta PC)" data-i18n="render" data-i18n-title="render.title">Render</button>
     </div>
   </div>
 </div>
 
 <div id="ayuda" class="panel">
-  <div class="ayuda-escena">
+  <div class="ayuda-escena" data-i18n-html="help.scene">
   <b>Clic</b> en la escena para mirar con el mouse (<kbd>Esc</kbd> para soltar).<br>
   <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> moverse · <kbd>Q</kbd>/<kbd>E</kbd> bajar/subir (volar) · <kbd>Shift</kbd> rápido<br>
   <kbd>F</kbd> volar · <kbd>C</kbd> caminar · <kbd>1</kbd>–<kbd>9</kbd> vistas · <kbd>V</kbd> copiar vista actual<br>
   <b>Doble clic</b> en un objeto para ver qué es y sus medidas
   </div>
-  <div class="ayuda-modelos">
+  <div class="ayuda-modelos" data-i18n-html="help.models">
   <b>Arrastra</b> para girar el modelo · <b>rueda</b> para acercar<br>
   <kbd>←</kbd> <kbd>→</kbd> modelo anterior / siguiente
   </div>
 </div>
 
 <div id="galeria" class="panel">
-  <div id="galeriaCabeza"><button id="btnAnt" aria-label="Anterior">◀</button><b id="modeloNombre"></b><span id="modeloCuenta"></span><button id="btnSig" aria-label="Siguiente">▶</button></div>
+  <div id="galeriaCabeza"><button id="btnAnt" aria-label="Anterior" data-i18n-aria="prev">◀</button><b id="modeloNombre"></b><span id="modeloCuenta"></span><button id="btnSig" aria-label="Siguiente" data-i18n-aria="next">▶</button></div>
   <div id="tiras"></div>
 </div>
 
 <div id="mapaVista">
   <div id="mapaBotones"></div>
-  <div id="mapaMarco"><img id="mapaImg" alt="Mapa del proyecto"><div id="mapaSvg" style="display:none"></div></div>
-  <div id="mapaNota">Toca la imagen para acercar o alejar.</div>
+  <div id="mapaMarco"><img id="mapaImg" alt="Mapa del proyecto" data-i18n-alt="map.alt"><div id="mapaSvg" style="display:none"></div></div>
+  <div id="mapaNota" data-i18n="map.tapZoom">Toca la imagen para acercar o alejar.</div>
 </div>
 
 <div id="vacio" class="panel"></div>
 
 <div id="renderPanel" class="panel">
-  <b>Render de esta vista</b>
+  <b data-i18n="render.panel">Render de esta vista</b>
   <div class="tubo"><div id="renderBarra"></div></div>
-  <span id="renderTexto">Preparando…</span>
+  <span id="renderTexto" data-i18n="render.preparing">Preparando…</span>
   <div class="grupo">
-    <button id="btnDescargar" disabled>Descargar PNG</button>
-    <button id="btnSalirRender">Salir</button>
+    <button id="btnDescargar" disabled data-i18n="render.download">Descargar PNG</button>
+    <button id="btnSalirRender" data-i18n="render.exit">Salir</button>
   </div>
 </div>
 
 <div id="joystick"><div class="perilla"></div></div>
-<div id="altura"><button id="btnSubir" aria-label="Subir">▲</button><button id="btnBajar" aria-label="Bajar">▼</button></div>
+<div id="altura"><button id="btnSubir" aria-label="Subir" data-i18n-aria="up">▲</button><button id="btnBajar" aria-label="Bajar" data-i18n-aria="down">▼</button></div>
 <div id="aviso" class="panel"></div>
-<div id="ficha" class="panel" role="dialog" aria-label="Ficha del objeto"></div>
+<div id="ficha" class="panel" role="dialog" aria-label="Ficha del objeto" data-i18n-aria="card.aria"></div>
 
 <div id="carga">
-  <h1 id="cargaTitulo">Cargando…</h1>
+  <h1 id="cargaTitulo" data-i18n="loading">Cargando…</h1>
   <div class="tubo"><div id="cargaBarra"></div></div>
   <p id="cargaTexto"></p>
 </div>

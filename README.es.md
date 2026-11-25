@@ -2,7 +2,7 @@
 
 Convierte fotos o un video corto de un cuarto en un **plano con medidas** y una **escena 3D que puedes recorrer**. Todo corre en tu propia tarjeta de video, con ComfyUI y Blender.
 
-![Habitación de hotel reconstruida desde un video del celular](docs/img/viewer_hotel.jpg)
+![Habitación de hotel reconstruida en 3D desde un video del celular](docs/img/hotel_orbit.gif)
 
 **Qué hace:**
 
