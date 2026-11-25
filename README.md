@@ -2,7 +2,7 @@
 
 **Photo to 3D room.** Turn ordinary photos or a short video of a room into a **measured floor plan** and a **walkable 3D scene**, running entirely on your own GPU with ComfyUI and Blender.
 
-*[Leer en español](README.es.md)*
+**[Try it in your browser](https://byscm.github.io/mole-poblano/)** · *[Leer en español](README.es.md)*
 
 [![Watch the 1-minute trailer on YouTube](docs/img/trailer_thumb.jpg)](https://youtu.be/cJ_rc77GipY)
 
@@ -24,9 +24,9 @@ Each example room started as a quick phone recording, the kind anyone can make i
 
 | Room | What went in | What came out |
 |---|---|---|
-| Hotel room | Two phone videos of about 30 s ([part 1](examples/source_videos/hotel_part1.mp4), [part 2](examples/source_videos/hotel_part2.mp4)) | [Viewer](viewer/?cuarto=hotel), [demo](demo/) |
-| Dining room and kitchen | Four short clips sent over a messaging app, joined in [one video](examples/source_videos/dining_kitchen.mp4) | [Viewer](viewer/?cuarto=casa_comedor) |
-| Bedroom with walk-in closet | [Eight photos](examples/source_photos_bedroom/) taken from a video | [Viewer](viewer/?cuarto=cuarto) |
+| Hotel room | Two phone videos of about 30 s ([part 1](examples/source_videos/hotel_part1.mp4), [part 2](examples/source_videos/hotel_part2.mp4)) | [Viewer](https://byscm.github.io/mole-poblano/viewer/?cuarto=hotel), [demo](https://byscm.github.io/mole-poblano/demo/) |
+| Dining room and kitchen | Four short clips sent over a messaging app, joined in [one video](examples/source_videos/dining_kitchen.mp4) | [Viewer](https://byscm.github.io/mole-poblano/viewer/?cuarto=casa_comedor) |
+| Bedroom with walk-in closet | [Eight photos](examples/source_photos_bedroom/) taken from a video | [Viewer](https://byscm.github.io/mole-poblano/viewer/?cuarto=cuarto) |
 
 ## What is in this repository
 
@@ -68,7 +68,9 @@ Optional models are used only when they are installed. Without Orient Anything V
 
 ### See the examples
 
-Double-click `viewer\serve.bat` (or run `python -m http.server 8765` inside `viewer\`) and open http://localhost:8765. Do the same in `demo\` for the step-by-step demo. Opening `index.html` directly with `file://` does not work, because browsers block loading the models.
+**Online:** open the [3D viewer](https://byscm.github.io/mole-poblano/viewer/) or the [step-by-step demo](https://byscm.github.io/mole-poblano/demo/) in your browser, nothing to install.
+
+**Locally:** double-click `viewer\serve.bat` (or run `python -m http.server 8765` inside `viewer\`) and open http://localhost:8765. Do the same in `demo\` for the step-by-step demo. Opening `index.html` directly with `file://` does not work, because browsers block loading the models.
 
 ## Configuration
 

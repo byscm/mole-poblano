@@ -6,6 +6,8 @@
 
 ![Habitación de hotel reconstruida en 3D desde un video del celular](docs/img/hotel_orbit.gif)
 
+**[Pruébalo en tu navegador](https://byscm.github.io/mole-poblano/)**: el visor 3D y el demo, sin instalar nada.
+
 **Qué hace:**
 
 1. Encuentra el piso, las paredes y el techo, y calcula la profundidad de cada punto de la foto.
