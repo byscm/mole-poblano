@@ -4,6 +4,8 @@
 
 *[Leer en español](README.es.md)*
 
+[![Watch the 1-minute trailer on YouTube](docs/img/trailer_thumb.jpg)](https://youtu.be/cJ_rc77GipY)
+
 ![Hotel room rebuilt in 3D from a short phone video](docs/img/hotel_orbit.gif)
 
 ![The same room in the web viewer](docs/img/viewer_hotel.jpg)

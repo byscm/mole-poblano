@@ -2,6 +2,8 @@
 
 **De foto a cuarto 3D.** Convierte fotos o un video corto de un cuarto en un **plano con medidas** y una **escena 3D que puedes recorrer**. Todo corre en tu propia tarjeta de video, con ComfyUI y Blender.
 
+[![Mira el trailer de 1 minuto en YouTube](docs/img/trailer_thumb.jpg)](https://youtu.be/cJ_rc77GipY)
+
 ![Habitación de hotel reconstruida en 3D desde un video del celular](docs/img/hotel_orbit.gif)
 
 **Qué hace:**
