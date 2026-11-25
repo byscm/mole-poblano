@@ -14,7 +14,7 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><span class="logo">▣</span> Mole Poblano <small>from a video to a real-scale 3D room</small></div>
+  <div class="brand"><span class="logo">▣</span> Mole Poblano <span class="demo-badge">DEMO</span> <small>replay of a pre-processed example</small></div>
   <ol class="steps" id="steps">
     <li data-step="1"><b>1</b> Video</li>
     <li data-step="2"><b>2</b> Map &amp; objects</li>
@@ -27,28 +27,28 @@
   <!-- STEP 1: upload + processing -->
   <section class="step" id="step1">
     <div class="upload-wrap" id="uploadPane">
-      <h1>Upload a video of your room</h1>
-      <p class="lead">Walk slowly around the room while filming (30 to 60 s). We draw the floor plan to scale, detect the furniture and build the room in 3D.</p>
-      <label class="drop" id="drop">
-        <input type="file" id="fileInput" accept="video/*" multiple hidden>
-        <div class="drop-icon">⬆</div>
-        <div><b>Drop your video here</b> or click to choose it</div>
-        <div class="muted">MP4 or MOV · you can upload several takes of the same room</div>
-      </label>
-      <div id="fileList" class="file-list"></div>
-      <div class="measure">
-        <label for="measure">One real measurement (optional, improves the scale)</label>
-        <input id="measure" placeholder="e.g. bed width = 1.40 m">
+      <h1>Demo: how Mole Poblano works</h1>
+      <p class="lead">A step-by-step walkthrough of a real example: a hotel room filmed with a phone in two takes of about 30 s.
+        Every result you will see was computed beforehand on a local GPU and is replayed here.</p>
+      <div class="demo-note">
+        <b>This page does not process videos.</b> Nothing is uploaded and nothing runs in your browser.
+        To turn your own room into 3D, run Mole Poblano on your computer with ComfyUI and Blender:
+        <a href="https://github.com/byscm/mole-poblano#quick-start" target="_blank" rel="noopener">setup guide →</a>
+      </div>
+      <div class="file-list">
+        <div class="file-item"><video src="../examples/source_videos/hotel_part1.mp4" muted loop autoplay playsinline></video>
+          <div><b>Take A</b><div class="muted small">phone video · the real input of this example</div></div></div>
+        <div class="file-item"><video src="../examples/source_videos/hotel_part2.mp4" muted loop autoplay playsinline></video>
+          <div><b>Take B</b><div class="muted small">phone video · the real input of this example</div></div></div>
       </div>
       <div class="actions">
-        <button class="ghost" id="useDemo">Use the demo video (hotel)</button>
-        <button class="primary" id="toProcess" disabled>Next →</button>
+        <button class="primary" id="useDemo">Start the demo →</button>
       </div>
     </div>
 
     <div class="process-wrap hidden" id="processPane">
-      <h1>Processing your video</h1>
-      <p class="lead" id="processSub">This takes a few minutes. You can keep the page open.</p>
+      <h1>Processing the example video <small class="muted">(replay)</small></h1>
+      <p class="lead" id="processSub"></p>
       <div class="process-grid">
         <ul class="stages" id="stages"></ul>
         <div>
@@ -64,7 +64,7 @@
   <section class="step hidden" id="step2">
     <div class="step-head">
       <div>
-        <h1>Your room: map and objects</h1>
+        <h1>The example room: map and objects</h1>
         <p class="lead">Check the floor plan and the image of each object. Each image was built by joining the fragments of the video. Remove anything that is wrong, then confirm.</p>
       </div>
       <div class="stats" id="stats2"></div>

@@ -20,26 +20,16 @@ document.querySelectorAll("#steps li").forEach((li) => li.addEventListener("clic
 }));
 
 // ---------- step 1: upload + processing ----------
-const drop = $("#drop"), fileInput = $("#fileInput");
-function setFiles(list) {
-  state.files = [...list].filter((f) => f.type.startsWith("video/") || /\.(mp4|mov|m4v)$/i.test(f.name));
-  $("#fileList").innerHTML = state.files.map((f, i) => `<div class="file-item"><video src="${URL.createObjectURL(f)}" muted></video>
-    <div><b>${f.name}</b><div class="muted small">${(f.size / 1e6).toFixed(1)} MB · take ${String.fromCharCode(65 + i)}</div></div></div>`).join("");
-  $("#toProcess").disabled = !state.files.length;
-}
-fileInput.addEventListener("change", () => setFiles(fileInput.files));
-drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
-drop.addEventListener("dragleave", () => drop.classList.remove("over"));
-drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); setFiles(e.dataTransfer.files); });
-$("#toProcess").addEventListener("click", startProcessing);
+// The hosted demo never takes the visitor's own video: it only replays the pre-processed hotel example
+// (api.js DEMO mode). A real backend would bring back an upload control here.
 $("#useDemo").addEventListener("click", () => { state.files = []; startProcessing(); });
 
 async function startProcessing() {
   $("#uploadPane").classList.add("hidden"); $("#processPane").classList.remove("hidden");
-  $("#processSub").textContent = state.files.length ? `${state.files.length} video(s) · this takes a few minutes.` : "Demo video: hotel room, 2 takes.";
+  $("#processSub").textContent = "Hotel room, 2 phone takes · replaying results computed on a local GPU (the real run takes a few minutes).";
   $("#stages").innerHTML = api.STAGES.map((s) => `<li><span class="dot"></span>${s.label}</li>`).join("");
   const lis = [...$("#stages").children], frames = $("#frames"); frames.innerHTML = "";
-  const scene = await api.processVideo(state.files, $("#measure").value, ({ stage, frac, frame }) => {
+  const scene = await api.processVideo(state.files, "", ({ stage, frac, frame }) => {
     lis.forEach((li, i) => { li.classList.toggle("done", i < stage || (i === stage && frac >= 1)); li.classList.toggle("run", i === stage && frac < 1); });
     lis.forEach((li, i) => { li.querySelector(".dot").textContent = li.classList.contains("done") ? "✓" : ""; });
     $("#bar").style.width = `${((stage + frac) / api.STAGES.length) * 100}%`;
