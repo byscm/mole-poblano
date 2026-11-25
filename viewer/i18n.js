@@ -6,7 +6,7 @@
 
 const STRINGS = {
   es: {
-    'page.title': 'Proyectos 3D',
+    'page.title': 'Mole Poblano · Visor 3D',
     'lang.label': 'Idioma',
     'project': 'Proyecto',
     'loading': 'Cargando…',
@@ -74,7 +74,7 @@ const STRINGS = {
     'init.serve': 'Abre la página desde un servidor local (serve.bat o python -m http.server), no con doble clic en el archivo.',
   },
   en: {
-    'page.title': '3D Projects',
+    'page.title': 'Mole Poblano · 3D viewer',
     'lang.label': 'Language',
     'project': 'Project',
     'loading': 'Loading…',

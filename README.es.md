@@ -1,6 +1,6 @@
-# Foto a cuarto 3D
+# Mole Poblano
 
-Convierte fotos o un video corto de un cuarto en un **plano con medidas** y una **escena 3D que puedes recorrer**. Todo corre en tu propia tarjeta de video, con ComfyUI y Blender.
+**De foto a cuarto 3D.** Convierte fotos o un video corto de un cuarto en un **plano con medidas** y una **escena 3D que puedes recorrer**. Todo corre en tu propia tarjeta de video, con ComfyUI y Blender.
 
 ![Habitación de hotel reconstruida en 3D desde un video del celular](docs/img/hotel_orbit.gif)
 
@@ -15,11 +15,30 @@ Convierte fotos o un video corto de un cuarto en un **plano con medidas** y una 
 **Qué trae:**
 
 - **`pipeline/`:** los scripts.
-- **`viewer/`:** el visor con tres cuartos de ejemplo. Ábrelo con `serve.bat`.
+- **`viewer/`:** el visor, en español e inglés, con tres cuartos de ejemplo. Ábrelo con `serve.bat`.
 - **`demo/`:** el demo paso a paso.
+- **`examples/`:** una foto de ejemplo para probar.
 
 **Los pesos de los modelos no vienen incluidos.** Cada quien los descarga de su página oficial.
 
-Las instrucciones completas, la configuración y las limitaciones están en el [README en inglés](README.md). Las licencias de cada modelo están en [MODELS.md](MODELS.md); algunas no permiten uso comercial.
+## Cómo se hicieron los cuartos de ejemplo
 
-El código es **GPL-3.0**.
+El pipeline entrega el plano, las medidas y un modelo 3D de cada objeto. Los tres cuartos del visor y el hotel del GIF tuvieron además un acabado hecho cuarto por cuarto, con scripts extra y decisiones a mano que no vienen en este repositorio:
+- limpiar el plano;
+- corregir muebles encimados o que atravesaban paredes;
+- elegir materiales;
+- hornear la luz en Blender.
+
+El pipeline te da un buen borrador, no el acabado de los ejemplos. Automatizar ese acabado es el siguiente paso.
+
+## Cómo se construyó
+
+Yo diseñé el proyecto, elegí los modelos, lo probé contra medidas reales y lo usé con clientes reales. Escribí el código con **Claude Code** como asistente de programación con IA; por eso algunos commits dicen `Co-Authored-By: Claude`.
+
+## Licencias
+
+- **El código** es **GPL-3.0**.
+- **Los cuartos de ejemplo** (modelos 3D, planos, fotos y renders) son **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.es)**: puedes usarlos para lo que quieras, incluso comercialmente, dando crédito a "BySCM – Mole Poblano".
+- **Las licencias de cada modelo** están en [MODELS.md](MODELS.md); algunas no permiten uso comercial.
+
+Las instrucciones completas, la configuración y las limitaciones están en el [README en inglés](README.md).

@@ -1,10 +1,10 @@
-# Photo to 3D room
+# Mole Poblano
 
-Turn ordinary photos or a short video of a room into a **measured floor plan** and a **walkable 3D scene**, running entirely on your own GPU with ComfyUI and Blender.
+**Photo to 3D room.** Turn ordinary photos or a short video of a room into a **measured floor plan** and a **walkable 3D scene**, running entirely on your own GPU with ComfyUI and Blender.
 
 *[Leer en español](README.es.md)*
 
-![Hotel room rebuilt in 3D from a 40-second phone video](docs/img/hotel_orbit.gif)
+![Hotel room rebuilt in 3D from a short phone video](docs/img/hotel_orbit.gif)
 
 ![The same room in the web viewer](docs/img/viewer_hotel.jpg)
 
@@ -83,11 +83,21 @@ The defaults match a standard ComfyUI Desktop install on Windows. Override them 
 - Generated 3D models are good for layout and visualisation, not for manufacturing.
 - Tested only on Windows with one GPU. Paths and launchers assume ComfyUI Desktop.
 
+## How the example rooms were made
+
+The pipeline gives the plan, the measurements and a 3D model of each object. The three rooms in `viewer/` and the hotel in the GIF above **went further than that**: each one also got a finishing pass done room by room with extra scripts and manual decisions that are not part of this repository. That pass cleaned up the merged plan, fixed furniture that overlapped or crossed walls, chose materials, and baked the lighting in Blender.
+
+So expect the pipeline to give you a solid draft, not the finished look of the examples. Automating that finishing pass is the next step on the roadmap.
+
+## How this was built
+
+I designed this project, chose the models, tested it against real measurements and used it with real clients. I wrote the code with **Claude Code** as an AI coding assistant, which is why some commits carry a `Co-Authored-By: Claude` line.
+
 ## Licence
 
 The code in this repository is released under the **GNU GPL v3.0** (see [LICENSE](LICENSE)). Several scripts run inside Blender and use its GPL Python API.
 
-The example rooms in `viewer/` and `demo/` (3D models, plans and video frames) may be used for testing and demonstration of this project.
+The example rooms in `viewer/`, `demo/`, `examples/` and `docs/img/` (3D models, plans, photos, video frames and renders) are licensed under **[Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)**: you can use them for anything, including commercial work, as long as you credit "BySCM – Mole Poblano".
 
 **Model licences are separate and some are non-commercial.** Qwen-Image 2.1, Orient Anything V2 and SpatialLM do not allow commercial use. Read [MODELS.md](MODELS.md) before using the output in a paid product.
 
