@@ -4,7 +4,7 @@
 
 **[Try it in your browser](https://byscm.github.io/mole-poblano/)** · *[Leer en español](README.es.md)*
 
-[![Watch the 1-minute trailer on YouTube](docs/img/trailer_thumb.jpg)](https://youtu.be/cJ_rc77GipY)
+[![Watch the 1-minute trailer on YouTube](docs/img/trailer_thumb.jpg)](https://youtu.be/RA9RGnpfIeA)
 
 ![Hotel room rebuilt in 3D from a short phone video](docs/img/hotel_orbit.gif)
 
