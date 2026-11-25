@@ -12,6 +12,11 @@
 4. Arma la escena 3D en Blender, con la misma cámara que la foto.
 5. Junta varias fotos o cuadros de un video en un solo cuarto.
 
+**Qué entra y qué sale:** cada cuarto de ejemplo empezó como una grabación rápida con el celular. Las grabaciones originales están en `examples/`, comprimidas y sin audio:
+- **Hotel:** dos videos de unos 30 s (`examples/source_videos/hotel_part1.mp4` y `hotel_part2.mp4`).
+- **Comedor y cocina:** cuatro clips cortos juntados en `examples/source_videos/dining_kitchen.mp4`.
+- **Cuarto con vestidor:** ocho fotos sacadas de un video (`examples/source_photos_bedroom/`).
+
 **Qué trae:**
 
 - **`pipeline/`:** los scripts.

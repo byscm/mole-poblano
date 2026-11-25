@@ -16,6 +16,16 @@ What it does, step by step:
 4. **Builds the 3D scene.** Every object becomes a 3D model, either a match from a local gallery or generated with TRELLIS.2. Blender places it with the same camera as the photo, so you can check the result over the original.
 5. **Joins several photos or video frames** into one room (`align_photos.py`, or the LingBot-Map / MapAnything aligners).
 
+## What goes in, what comes out
+
+Each example room started as a quick phone recording, the kind anyone can make in a minute. The original recordings are in `examples/`, compressed and without audio, so you can see exactly what the pipeline was given:
+
+| Room | What went in | What came out |
+|---|---|---|
+| Hotel room | Two phone videos of about 30 s ([part 1](examples/source_videos/hotel_part1.mp4), [part 2](examples/source_videos/hotel_part2.mp4)) | [Viewer](viewer/?cuarto=hotel), [demo](demo/) |
+| Dining room and kitchen | Four short clips sent over a messaging app, joined in [one video](examples/source_videos/dining_kitchen.mp4) | [Viewer](viewer/?cuarto=casa_comedor) |
+| Bedroom with walk-in closet | [Eight photos](examples/source_photos_bedroom/) taken from a video | [Viewer](viewer/?cuarto=cuarto) |
+
 ## What is in this repository
 
 | Folder | What it is |
