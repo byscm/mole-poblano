@@ -1,26 +1,12 @@
-# Photo -> map pipeline (English port)
+# Pipeline conventions
 
-English port of the Spanish scripts in the original Spanish `scripts` folder (not published) (those stay untouched; do not edit,
-move or delete them). Everything here is English: file names, identifiers, comments, console output,
-JSON keys, output file names. Behavior and numbers must stay identical to the Spanish version, apart from
-the documented changes below.
+Reference for the scripts in `pipeline/`: the files each scene folder holds and every key in `map.json`.
+To edit a finished scene by hand or with an AI agent, start with [AGENTS.md](../AGENTS.md), then rebuild with
+`rebuild.py <scene>`.
 
-## Script mapping (old -> new)
-
-| old (scripts\)                                   | new (pipeline\)        |
-|--------------------------------------------------|------------------------|
-| foto_libre.py                                    | photo_to_map.py        |
-| sam_escena.py + medir_escena.py + vlm.py (HTTP)  | comfy_client.py        |
-| objetos_libres.py                                | detect_objects.py      |
-| galeria_libre.py                                 | gallery_match.py       |
-| huellas.py (query part only)                     | fingerprints.py        |
-| escala_referencias.py                            | fix_scale.py           |
-| montar_simbolico.py                              | build_symbolic.py      |
-| plano.py                                         | draw_plan.py           |
-| generar_libre.py                                 | generate_models.py     |
-| silueta.py                                       | silhouette.py          |
-| pose_generados.py                                | fit_poses.py           |
-| montar_libre.py                                  | build_scene.py         |
+The pipeline is a port of earlier private scripts written in Spanish. Tables below keep an "old" column for those
+names; only the "new" names exist in this repository. Everything here is English: file names, identifiers,
+comments, console output, JSON keys and output file names.
 
 No `exec()` loading of other scripts: import plain modules (`from comfy_client import ...`). Scripts run
 with the ComfyUI standalone python and `-I`, so each script must do

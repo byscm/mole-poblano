@@ -99,6 +99,18 @@ The pipeline gives the plan, the measurements and a 3D model of each object. The
 
 So expect the pipeline to give you a solid draft, not the finished look of the examples. Automating that finishing pass is the next step on the roadmap.
 
+## Polish a draft with your own AI agent
+
+The whole room lives in one file, `out/<room>/map.json`, and `pipeline/CONVENTIONS.md` documents every key. If you use a coding agent with your own account (Claude Code, Cursor, Codex, Antigravity…), open the Mole Poblano folder with it and ask for changes in plain language, for example: *"in out/hotel_room, move the armchair 20 cm to the left, make the desk 75 cm tall and rebuild the scene"*.
+
+The agent picks up its instructions from [AGENTS.md](AGENTS.md): the coordinate system, which edits the 3D scene honours, and the one command that rebuilds everything in a few seconds:
+
+```powershell
+& "$env:LOCALAPPDATA\Comfy-Desktop\ComfyUI-Installs\ComfyUI\standalone-env\python.exe" -I pipeline\rebuild.py out\hotel_room
+```
+
+You can also edit `map.json` by hand and run the same command. This repository ships no keys or subscriptions: the agent and its cost are yours, and everything else still runs on your machine.
+
 ## How this was built
 
 I designed this project, chose the models, tested it against real measurements and used it with real clients. I wrote the code with **Claude Code** as an AI coding assistant, which is why some commits carry a `Co-Authored-By: Claude` line.

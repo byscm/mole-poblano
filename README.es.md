@@ -36,6 +36,12 @@ El pipeline entrega el plano, las medidas y un modelo 3D de cada objeto. Los tre
 
 El pipeline te da un buen borrador, no el acabado de los ejemplos. Automatizar ese acabado es el siguiente paso.
 
+## Pulir un borrador con tu propio agente de IA
+
+Todo el cuarto vive en un solo archivo, `out/<cuarto>/map.json`, y `pipeline/CONVENTIONS.md` documenta cada campo. Si usas un agente de código con tu propia cuenta (Claude Code, Cursor, Codex, Antigravity…), abre la carpeta de Mole Poblano con él y pídele cambios en lenguaje natural. Por ejemplo: *"en out/hotel_room, mueve el sillón 20 cm a la izquierda, deja el escritorio en 75 cm de alto y regenera la escena"*.
+
+El agente encuentra solo las instrucciones en [AGENTS.md](AGENTS.md): cómo son las coordenadas, qué cambios respeta la escena 3D y el comando para regenerar todo en unos segundos (`pipeline/rebuild.py`). Este repositorio no incluye claves ni suscripciones. El agente y su costo son tuyos, y todo lo demás sigue corriendo en tu equipo.
+
 ## Cómo se construyó
 
 Yo diseñé el proyecto, elegí los modelos, lo probé contra medidas reales y lo usé con clientes reales. Escribí el código con **Claude Code** como asistente de programación con IA; por eso algunos commits dicen `Co-Authored-By: Claude`.
