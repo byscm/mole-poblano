@@ -1,0 +1,338 @@
+{
+ "cuartos": [
+  {
+   "id": "cuarto",
+   "nombre": "Cuarto con vestidor",
+   "archivo": "cuartos/cuarto.glb",
+   "modelos": [
+    {
+     "nombre": "Cama",
+     "archivo": "proyectos/cuarto/modelos/cama.glb",
+     "miniatura": "proyectos/cuarto/modelos/cama.webp"
+    },
+    {
+     "nombre": "Lampara",
+     "archivo": "proyectos/cuarto/modelos/lampara.glb",
+     "miniatura": "proyectos/cuarto/modelos/lampara.webp"
+    }
+   ],
+   "mapas": [
+    {
+     "nombre": "Planta 3D",
+     "archivo": "proyectos/cuarto/mapa_1.jpg"
+    },
+    {
+     "nombre": "Plano de objetos",
+     "archivo": "proyectos/cuarto/mapa_2.jpg"
+    }
+   ],
+   "horneado": "cuartos/cuarto_horneado.glb",
+   "exposicion": -0.4,
+   "escalaLuz": 2,
+   "vistas": [
+    {
+     "nombre": "Desde la puerta",
+     "pos": [
+      1.15,
+      1.55,
+      -1.15
+     ],
+     "mirar": [
+      1.2,
+      0.8,
+      -5.6
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Hacia la TV",
+     "pos": [
+      0.9,
+      1.45,
+      -5.5
+     ],
+     "mirar": [
+      3.4,
+      1,
+      -3.6
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Vestidor",
+     "pos": [
+      1.3,
+      1.55,
+      -2.6
+     ],
+     "mirar": [
+      3.4,
+      0.9,
+      -0.5
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Desde el vestidor",
+     "pos": [
+      3.25,
+      1.55,
+      -0.95
+     ],
+     "mirar": [
+      0.3,
+      0.75,
+      -4.2
+     ],
+     "fov": 70
+    }
+   ]
+  },
+  {
+   "id": "hotel",
+   "nombre": "Habitación de hotel",
+   "archivo": "cuartos/hotel.glb",
+   "modelos": [
+    {
+     "nombre": "Cama matrimonial",
+     "archivo": "proyectos/hotel/modelos/bed.glb",
+     "miniatura": "proyectos/hotel/modelos/bed.webp"
+    },
+    {
+     "nombre": "Buró",
+     "archivo": "proyectos/hotel/modelos/bedside_table.glb",
+     "miniatura": "proyectos/hotel/modelos/bedside_table.webp"
+    },
+    {
+     "nombre": "Escritorio",
+     "archivo": "proyectos/hotel/modelos/desk.glb",
+     "miniatura": "proyectos/hotel/modelos/desk.webp"
+    },
+    {
+     "nombre": "Silla del escritorio",
+     "archivo": "proyectos/hotel/modelos/desk_chair.glb",
+     "miniatura": "proyectos/hotel/modelos/desk_chair.webp"
+    },
+    {
+     "nombre": "Silla naranja",
+     "archivo": "proyectos/hotel/modelos/lounge_chair.glb",
+     "miniatura": "proyectos/hotel/modelos/lounge_chair.webp"
+    },
+    {
+     "nombre": "Mesita del teléfono",
+     "archivo": "proyectos/hotel/modelos/phone_desk.glb",
+     "miniatura": "proyectos/hotel/modelos/phone_desk.webp"
+    },
+    {
+     "nombre": "Mueble abierto",
+     "archivo": "proyectos/hotel/modelos/shelf_unit.glb",
+     "miniatura": "proyectos/hotel/modelos/shelf_unit.webp"
+    },
+    {
+     "nombre": "Lavabo",
+     "archivo": "proyectos/hotel/modelos/vanity.glb",
+     "miniatura": "proyectos/hotel/modelos/vanity.webp"
+    },
+    {
+     "nombre": "Lámpara de pared",
+     "archivo": "proyectos/hotel/modelos/wall_sconce.glb",
+     "miniatura": "proyectos/hotel/modelos/wall_sconce.webp"
+    }
+   ],
+   "mapas": [
+    {
+     "nombre": "Planta 3D",
+     "archivo": "proyectos/hotel/mapa_1.jpg"
+    },
+    {
+     "nombre": "Plano de objetos",
+     "archivo": "proyectos/hotel/mapa_2.jpg"
+    }
+   ],
+   "vistas": [
+    {
+     "nombre": "Camas",
+     "pos": [
+      2.332,
+      1.55,
+      -3.516
+     ],
+     "mirar": [
+      -2.054,
+      0.8,
+      -1.277
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Escritorio",
+     "pos": [
+      0.033,
+      1.55,
+      -0.359
+     ],
+     "mirar": [
+      -0.443,
+      1,
+      -4.219
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Lavabo y biombo",
+     "pos": [
+      -2.276,
+      1.55,
+      -3.387
+     ],
+     "mirar": [
+      1.548,
+      0.9,
+      -2.864
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Muro de piedra",
+     "pos": [
+      -1.395,
+      1.55,
+      -4.475
+     ],
+     "mirar": [
+      0.892,
+      1.2,
+      -0.307
+     ],
+     "fov": 70
+    }
+   ],
+   "horneado": "cuartos/hotel_horneado.glb",
+   "exposicion": -0.6,
+   "escalaLuz": 2
+  },
+  {
+   "id": "casa_comedor",
+   "nombre": "Comedor y cocina",
+   "archivo": "cuartos/casa_comedor.glb",
+   "modelos": [
+    {
+     "nombre": "Banco",
+     "archivo": "proyectos/casa_comedor/modelos/bar_stool.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/bar_stool.webp"
+    },
+    {
+     "nombre": "Silla de comedor",
+     "archivo": "proyectos/casa_comedor/modelos/dining_chair.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/dining_chair.webp"
+    },
+    {
+     "nombre": "Mesa de comedor",
+     "archivo": "proyectos/casa_comedor/modelos/dining_table.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/dining_table.webp"
+    },
+    {
+     "nombre": "Isla de cocina",
+     "archivo": "proyectos/casa_comedor/modelos/kitchen_island.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/kitchen_island.webp"
+    },
+    {
+     "nombre": "Mueble tipo chimenea",
+     "archivo": "proyectos/casa_comedor/modelos/mantel.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/mantel.webp"
+    },
+    {
+     "nombre": "Reloj",
+     "archivo": "proyectos/casa_comedor/modelos/mantel_clock.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/mantel_clock.webp"
+    },
+    {
+     "nombre": "Planta",
+     "archivo": "proyectos/casa_comedor/modelos/peace_lily.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/peace_lily.webp"
+    },
+    {
+     "nombre": "Aparador",
+     "archivo": "proyectos/casa_comedor/modelos/sideboard.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/sideboard.webp"
+    },
+    {
+     "nombre": "Florero",
+     "archivo": "proyectos/casa_comedor/modelos/table_vase.glb",
+     "miniatura": "proyectos/casa_comedor/modelos/table_vase.webp"
+    }
+   ],
+   "mapas": [
+    {
+     "nombre": "Planta 3D",
+     "archivo": "proyectos/casa_comedor/mapa_1.jpg"
+    },
+    {
+     "nombre": "Plano de objetos",
+     "archivo": "proyectos/casa_comedor/mapa_2.jpg"
+    }
+   ],
+   "vistas": [
+    {
+     "nombre": "Comedor",
+     "pos": [
+      3.59,
+      1.45,
+      -0.895
+     ],
+     "mirar": [
+      -1.285,
+      0.8,
+      -1.019
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Isla",
+     "pos": [
+      1.677,
+      1.45,
+      -5.674
+     ],
+     "mirar": [
+      1.746,
+      0.8,
+      0.389
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Cocina",
+     "pos": [
+      2.282,
+      1.45,
+      -2.836
+     ],
+     "mirar": [
+      -2.447,
+      1,
+      -4.44
+     ],
+     "fov": 70
+    },
+    {
+     "nombre": "Muebles altos",
+     "pos": [
+      -0.882,
+      1.45,
+      -4.779
+     ],
+     "mirar": [
+      3.107,
+      1,
+      -3.66
+     ],
+     "fov": 70
+    }
+   ],
+   "horneado": "cuartos/casa_comedor_horneado.glb",
+   "exposicion": -1.15,
+   "escalaLuz": 2
+  }
+ ]
+}

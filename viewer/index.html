@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Proyectos 3D</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --fondo: rgba(20,22,26,.78); --borde: rgba(255,255,255,.14); --texto: #f2f2f0; --suave: #b9bcc2; --acento: #e8b04b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #15171b; color: var(--texto);
+    font: 14px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; touch-action: none; user-select: none; -webkit-user-select: none; }
+  canvas#escena { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+  .panel { position: fixed; background: var(--fondo); border: 1px solid var(--borde); border-radius: 12px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  #barra { top: max(12px, env(safe-area-inset-top)); left: 12px; right: 12px; margin: 0 auto; max-width: 980px;
+    display: flex; flex-direction: column; gap: 8px; padding: 8px 10px; }
+  #barra .fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  #barra .herramientas { padding-top: 8px; border-top: 1px solid var(--borde); gap: 10px; }
+  .seccion { position: relative; display: flex; align-items: center; gap: 4px; padding: 3px 4px 3px 8px; border-radius: 10px; background: rgba(255,255,255,.04); }
+  .seccion .tit { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); margin-right: 4px; }
+  #secVistas .tit, #secRender { padding-left: 4px; }
+  #secVistas .tit { display: none; }
+  .segmentos { display: inline-flex; border: 1px solid var(--borde); border-radius: 9px; overflow: hidden; }
+  .segmentos button { border: 0; border-radius: 0; background: transparent; }
+  .segmentos button + button { border-left: 1px solid var(--borde); }
+  .segmentos button.activo { background: var(--acento); }
+  .segmentos.grande button { padding: 7px 16px; font-weight: 600; }
+  .desplegable { position: absolute; top: calc(100% + 6px); left: 0; z-index: 5; display: none; flex-direction: column; gap: 4px; padding: 8px; min-width: 210px; }
+  .desplegable.abierto { display: flex; }
+  .desplegable #vistas, .desplegable #misVistas { display: flex; flex-direction: column; gap: 4px; }
+  .desplegable button { text-align: left; }
+  .desplegable .num { display: inline-block; width: 18px; color: var(--suave); font-variant-numeric: tabular-nums; }
+  .desplegable .fila-vista { display: flex; gap: 4px; } .desplegable .fila-vista button:first-child { flex: 1; }
+  .desplegable .guardar { border-style: dashed; color: var(--suave); }
+  #misVistas:not(:empty) { border-top: 1px solid var(--borde); padding-top: 4px; }
+  #barra label { color: var(--suave); font-size: 12px; }
+  select, button { font: inherit; color: var(--texto); background: rgba(255,255,255,.07); border: 1px solid var(--borde);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+  select { max-width: 260px; }
+  select option { background: #23262c; }
+  button:hover { background: rgba(255,255,255,.14); }
+  button.activo { background: var(--acento); color: #1a1a1a; border-color: var(--acento); font-weight: 600; }
+  .grupo { display: flex; gap: 4px; align-items: center; }
+  .sep { flex: 1; }
+  #luz { width: 90px; accent-color: var(--acento); }
+  #ayuda { bottom: max(12px, env(safe-area-inset-bottom)); right: 12px; padding: 10px 12px; max-width: 300px; font-size: 12px; color: var(--suave); }
+  #ayuda b { color: var(--texto); }
+  #ayuda kbd { display: inline-block; min-width: 18px; padding: 0 4px; border: 1px solid var(--borde); border-radius: 4px; text-align: center; color: var(--texto); font: 11px/16px ui-monospace, monospace; }
+  #mira { position: fixed; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: rgba(255,255,255,.8); box-shadow: 0 0 0 1px rgba(0,0,0,.4); pointer-events: none; display: none; }
+  #aviso { position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%); padding: 8px 14px; font-size: 13px; display: none; max-width: 90vw; text-align: center; }
+  /* Pantalla de carga */
+  #carga { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    background: radial-gradient(circle at 50% 40%, #2a2d33, #121317); z-index: 10; transition: opacity .4s; }
+  #carga.oculta { opacity: 0; pointer-events: none; }
+  #carga h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: .02em; }
+  #carga .tubo { width: min(320px, 70vw); height: 6px; border-radius: 3px; background: rgba(255,255,255,.12); overflow: hidden; }
+  #carga .tubo div { height: 100%; width: 0; background: var(--acento); transition: width .2s; }
+  #carga p { margin: 0; color: var(--suave); font-size: 13px; min-height: 1.4em; }
+  /* Controles táctiles */
+  #joystick { position: fixed; left: max(24px, env(safe-area-inset-left)); bottom: max(28px, env(safe-area-inset-bottom)); width: 130px; height: 130px;
+    border-radius: 50%; background: rgba(20,22,26,.45); border: 2px solid rgba(255,255,255,.25); display: none; touch-action: none; }
+  #joystick .perilla { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+    background: rgba(255,255,255,.55); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+  #altura { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(40px, env(safe-area-inset-bottom)); display: none; flex-direction: column; gap: 10px; }
+  #altura button { width: 56px; height: 56px; border-radius: 50%; font-size: 20px; background: rgba(20,22,26,.55); }
+  body.tactil #joystick { display: block; }
+  body.tactil.volar #altura { display: flex; }
+  body.tactil #ayuda { display: none; }
+  body.tactil #aviso { bottom: auto; top: 120px; }
+  /* Pestañas por proyecto: Todo junto / Modelos / Mapa */
+  #pestanas button { padding: 6px 12px; }
+  body.v-modelos .solo-escena, body.v-mapa .solo-escena { display: none !important; }
+  body.v-modelos #joystick, body.v-modelos #altura, body.v-mapa #joystick, body.v-mapa #altura { display: none !important; }
+  body.v-modelos #ayuda .ayuda-escena, body.v-escena #ayuda .ayuda-modelos { display: none; }
+  body.v-mapa #ayuda { display: none; }
+  #galeria { left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); margin: 0 auto; max-width: 980px; padding: 8px; display: none; }
+  body.v-modelos #galeria { display: block; }
+  body.v-modelos #ayuda { bottom: auto; top: 76px; }
+  #galeriaCabeza { display: flex; align-items: center; gap: 8px; margin: 0 2px 6px; }
+  #galeriaCabeza b { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #galeriaCabeza span { color: var(--suave); font-size: 12px; }
+  #tiras { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; touch-action: pan-x; scrollbar-width: thin; }
+  #tiras button { flex: 0 0 auto; width: 92px; padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; line-height: 1.2; }
+  #tiras button img, #tiras button .sinmini { width: 80px; height: 80px; object-fit: contain; border-radius: 6px; background: rgba(255,255,255,.06); }
+  #tiras button .sinmini { display: grid; place-items: center; color: var(--suave); font-size: 22px; }
+  #tiras button span { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #tiras button.activo { color: #1a1a1a; }
+  #mapaVista { position: fixed; inset: 0; padding: 76px 12px 12px; display: none; flex-direction: column; gap: 8px; background: #15171b; z-index: 1; }
+  body.v-mapa #mapaVista { display: flex; }
+  #mapaBotones { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  #mapaMarco { flex: 1; overflow: auto; touch-action: pan-x pan-y; border-radius: 10px; background: #fff; display: flex; }
+  #mapaMarco img { margin: auto; max-width: 100%; max-height: 100%; cursor: zoom-in; display: block; }
+  #mapaMarco.zoom img { max-width: none; max-height: none; width: 250%; cursor: zoom-out; }
+  #mapaNota { text-align: center; color: var(--suave); font-size: 12px; }
+  #mapaNota .lm { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; }
+  #mapaNota .lm.naranja { background: #f2a019; } #mapaNota .lm.azul { background: #2f7bf6; border-radius: 50%; }
+  #mapaSvg { margin: auto; flex: none; } #mapaSvg svg { display: block; cursor: zoom-in; font-family: system-ui, sans-serif; }
+  #mapaMarco.zoom #mapaSvg svg { cursor: zoom-out; }
+  #mapaSvg .rej { stroke: #ececec; stroke-width: 1; }
+  #mapaSvg .piso { fill: #f6f3ec; stroke: none; }
+  #mapaSvg .pared { fill: #3b3d42; }
+  #mapaSvg .caja { fill: rgba(60,130,80,.06); stroke: #3c8a50; stroke-width: 2.5; }
+  #mapaSvg .caja.alto { fill: none; stroke-dasharray: 6 5; stroke-width: 1.5; }
+  #mapaSvg .caja.ventana { fill: #cfe6f7; stroke: #4c8fc0; }
+  #mapaSvg .caja.puerta { fill: #efe4d2; stroke: #9a7a50; }
+  #mapaSvg .caja.sobre { fill: transparent; stroke: transparent; }
+  #mapaSvg .caja.mov { fill: rgba(242,160,25,.14); stroke: #f2a019; stroke-width: 3.5; }
+  #mapaSvg .fantasma { fill: none; stroke: #888; stroke-width: 2; stroke-dasharray: 7 6; }
+  #mapaSvg .conFoto .fantasma { stroke: #fff; filter: drop-shadow(0 0 2px #000); }
+  #mapaSvg .frente { fill: #3c8a50; } #mapaSvg .frente.mov { fill: #f2a019; }
+  #mapaSvg .mueble { cursor: pointer; }
+  #mapaSvg .mueble:hover .caja { stroke: #2f7bf6; stroke-width: 3.5; }
+  #mapaSvg .etq { font-size: 11px; text-anchor: middle; fill: #222; paint-order: stroke; stroke: #fff; stroke-width: 3px; pointer-events: none; }
+  #mapaSvg .yo circle { fill: #2f7bf6; stroke: #fff; stroke-width: 3; } #mapaSvg .yo .cono { fill: rgba(47,123,246,.25); }
+  #mapaSvg .yo { pointer-events: none; }
+  #mapaSvg .escala line { stroke: #111; stroke-width: 4; } #mapaSvg .escala text { font-size: 12px; text-anchor: middle; fill: #111; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+  #vacio { position: fixed; left: 50%; top: 45%; transform: translate(-50%, -50%); padding: 14px 18px; display: none; text-align: center; }
+  #barra { z-index: 2; }
+  @media (max-width: 700px) {
+    body.v-modelos #ayuda { display: none; }
+    #mapaVista { padding-top: 112px; }
+    #barra { padding: 6px; gap: 6px; font-size: 13px; }
+    select { max-width: 100%; flex: 1 1 100%; }
+    .segmentos.grande { flex: 1 1 100%; } .segmentos.grande button { flex: 1; padding: 7px 6px; }
+    button { padding: 6px 8px; }
+    #barra .herramientas { gap: 6px; }
+    .seccion .tit { display: none; }
+    .seccion { padding: 2px; }
+    #luzgrupo { display: none; }
+  }
+  /* Render de esta vista */
+  #renderPanel { left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); padding: 10px 14px; display: none;
+    flex-direction: column; gap: 8px; align-items: center; min-width: min(360px, 92vw); z-index: 6; }
+  #renderPanel .tubo { width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,.12); overflow: hidden; }
+  #renderPanel .tubo div { height: 100%; width: 0; background: var(--acento); transition: width .2s; }
+  #renderPanel span { color: var(--suave); font-size: 12px; text-align: center; }
+  body.renderizando #renderPanel { display: flex; }
+  body.renderizando #barra, body.renderizando #ayuda, body.renderizando #joystick, body.renderizando #altura, body.renderizando #mira { display: none !important; }
+  #renderImg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; }
+  body.renderizando #renderImg.activa { display: block; }
+  button:disabled { opacity: .45; cursor: default; }
+  /* Ficha del objeto (doble clic / doble toque) */
+  #ficha { right: 12px; top: 124px; width: 300px; max-height: calc(100vh - 110px); overflow: auto; padding: 12px 14px; display: none; font-size: 13px; }
+  #ficha.abierta { display: block; }
+  #ficha .cab { display: flex; align-items: flex-start; gap: 8px; }
+  #ficha h3 { margin: 0; font-size: 16px; flex: 1; }
+  #ficha .num { color: var(--suave); font-weight: 400; font-size: 13px; }
+  #ficha .cerrar { padding: 2px 9px; }
+  #ficha img { display: block; max-width: 100%; max-height: 150px; margin: 10px auto 4px; }
+  #ficha p { margin: 8px 0; color: var(--suave); line-height: 1.4; }
+  #ficha table { width: 100%; border-collapse: collapse; margin: 8px 0 4px; }
+  #ficha td { padding: 4px 0; border-top: 1px solid var(--borde); }
+  #ficha td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--texto); }
+  #ficha .nota { font-size: 11px; color: var(--suave); margin-top: 8px; }
+  #ficha .etq { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 9px; border: 1px solid var(--borde); color: var(--suave); margin-top: 6px; }
+  #ficha .editar { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--borde); }
+  #ficha .fila-editar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  #ficha .fila-editar .todos { margin: 0; }
+  #ficha .barrita { display: grid; grid-template-columns: 52px 1fr 58px; gap: 6px; align-items: center; margin-top: 8px; color: var(--suave); font-size: 12px; }
+  #ficha .barrita input { width: 100%; accent-color: var(--acento); }
+  #ficha .barrita span { text-align: right; color: var(--texto); font-variant-numeric: tabular-nums; }
+  #ficha .barrita input:disabled { opacity: .35; }
+  #ficha .cambio { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--borde); }
+  #ficha .acciones { display: flex; gap: 6px; margin: 8px 0 4px; } #ficha .acciones button { flex: 1; }
+  #ficha .todos { display: flex; gap: 6px; align-items: center; margin: 8px 0 2px; color: var(--suave); font-size: 12px; }
+  #ficha .opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+  #ficha .opciones button { padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; line-height: 1.15; }
+  #ficha .opciones img { width: 100%; height: 64px; object-fit: contain; margin: 0; max-height: none; }
+  #ficha .opciones .sinimg { height: 64px; display: grid; place-items: center; color: var(--suave); }
+  #ficha .opciones small { color: var(--suave); font-size: 10px; }
+  #ficha .opciones button.cargando { opacity: .5; }
+  #ficha .subt { margin: 12px 0 0; color: var(--suave); font-size: 12px; font-weight: 600; }
+  body.renderizando #ficha, body.v-modelos #ficha { display: none !important; }
+  body.v-mapa #ficha { z-index: 3; } body.v-mapa #ficha [data-modo] { display: none; }
+  #ficha .ver3d { width: 100%; margin-top: 8px; background: #f2b134; color: #111; font-weight: 600; border: 0; }
+  #mapaSvg .mueble.movible { cursor: grab; } #mapaSvg .mueble.sel { touch-action: none; }
+  #mapaSvg .mueble.sel .caja { stroke: #2f7bf6; stroke-width: 4; }
+  @media (max-width: 700px) { body.v-mapa #ficha { max-height: 38vh; } #mapaBotones { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; } #mapaBotones button { white-space: nowrap; flex: none; } body.v-mapa.con-ficha #mapaVista { padding-bottom: calc(38vh + 16px); } body.v-mapa.con-ficha #mapaNota { display: none; } #ficha { left: 8px; right: 8px; top: auto; bottom: max(8px, env(safe-area-inset-bottom)); width: auto; max-height: 52vh; } }
+</style>
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.js", "three/addons/": "./lib/addons/" } }
+</script>
+</head>
+<body>
+<canvas id="escena" tabindex="0"></canvas>
+<img id="renderImg" alt="">
+<div id="mira"></div>
+
+<div id="barra" class="panel">
+  <!-- Nivel 1: proyecto y secciones -->
+  <div class="fila principal">
+    <select id="selCuarto" aria-label="Proyecto"></select>
+    <div class="segmentos grande" id="pestanas">
+      <button data-vista="escena" class="activo" title="La escena completa, para recorrerla">Todo junto</button>
+      <button data-vista="modelos" title="Cada modelo 3D por separado">Modelos</button>
+      <button data-vista="mapa" title="Planos y vista desde arriba">Mapa</button>
+    </div>
+  </div>
+  <!-- Nivel 2: herramientas de la escena, por grupos -->
+  <div class="fila herramientas solo-escena">
+    <div class="seccion" id="secVistas">
+      <span class="tit">Vistas</span>
+      <button id="btnVistas" aria-haspopup="true" aria-expanded="false" title="Puntos de vista guardados (teclas 1–9)">Vistas ▾</button>
+      <div id="menuVistas" class="panel desplegable">
+        <div id="vistas"></div>
+        <div id="misVistas"></div>
+        <button id="btnGuardarVista" class="guardar">＋ Guardar esta vista</button>
+      </div>
+    </div>
+    <div class="seccion">
+      <span class="tit">Moverse</span>
+      <div class="segmentos">
+        <button id="btnVolar" class="activo" title="Volar libremente (tecla F)">Volar</button>
+        <button id="btnCaminar" title="Caminar a 1.6 m sin atravesar paredes (tecla C)">Caminar</button>
+      </div>
+    </div>
+    <div class="seccion">
+      <span class="tit">Luz</span>
+      <button id="btnHorneado" title="Usar la luz horneada en Blender/Cycles (se ve como los renders) o luz en vivo">Luz Cycles</button>
+      <button id="btnAO" title="Sombras suaves en rincones y debajo de los muebles (oclusión ambiental)">Sombras</button>
+      <span id="luzgrupo"><input id="luz" type="range" min="0.4" max="2.2" step="0.05" value="1.0" aria-label="Intensidad de la luz" title="Intensidad de la luz"></span>
+    </div>
+    <div class="seccion" id="secRender">
+      <button id="btnRender" title="Render con luz realista desde esta vista (solo en esta PC)">Render</button>
+    </div>
+  </div>
+</div>
+
+<div id="ayuda" class="panel">
+  <div class="ayuda-escena">
+  <b>Clic</b> en la escena para mirar con el mouse (<kbd>Esc</kbd> para soltar).<br>
+  <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> moverse · <kbd>Q</kbd>/<kbd>E</kbd> bajar/subir (volar) · <kbd>Shift</kbd> rápido<br>
+  <kbd>F</kbd> volar · <kbd>C</kbd> caminar · <kbd>1</kbd>–<kbd>9</kbd> vistas · <kbd>V</kbd> copiar vista actual<br>
+  <b>Doble clic</b> en un objeto para ver qué es y sus medidas
+  </div>
+  <div class="ayuda-modelos">
+  <b>Arrastra</b> para girar el modelo · <b>rueda</b> para acercar<br>
+  <kbd>←</kbd> <kbd>→</kbd> modelo anterior / siguiente
+  </div>
+</div>
+
+<div id="galeria" class="panel">
+  <div id="galeriaCabeza"><button id="btnAnt" aria-label="Anterior">◀</button><b id="modeloNombre"></b><span id="modeloCuenta"></span><button id="btnSig" aria-label="Siguiente">▶</button></div>
+  <div id="tiras"></div>
+</div>
+
+<div id="mapaVista">
+  <div id="mapaBotones"></div>
+  <div id="mapaMarco"><img id="mapaImg" alt="Mapa del proyecto"><div id="mapaSvg" style="display:none"></div></div>
+  <div id="mapaNota">Toca la imagen para acercar o alejar.</div>
+</div>
+
+<div id="vacio" class="panel"></div>
+
+<div id="renderPanel" class="panel">
+  <b>Render de esta vista</b>
+  <div class="tubo"><div id="renderBarra"></div></div>
+  <span id="renderTexto">Preparando…</span>
+  <div class="grupo">
+    <button id="btnDescargar" disabled>Descargar PNG</button>
+    <button id="btnSalirRender">Salir</button>
+  </div>
+</div>
+
+<div id="joystick"><div class="perilla"></div></div>
+<div id="altura"><button id="btnSubir" aria-label="Subir">▲</button><button id="btnBajar" aria-label="Bajar">▼</button></div>
+<div id="aviso" class="panel"></div>
+<div id="ficha" class="panel" role="dialog" aria-label="Ficha del objeto"></div>
+
+<div id="carga">
+  <h1 id="cargaTitulo">Cargando…</h1>
+  <div class="tubo"><div id="cargaBarra"></div></div>
+  <p id="cargaTexto"></p>
+</div>
+
+<script type="module" src="./visor.js"></script>
+</body>
+</html>

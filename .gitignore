@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+# local outputs and weights
+out/
+gallery/
+*.safetensors
+*.pt
+*.ckpt

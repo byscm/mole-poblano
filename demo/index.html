@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room 3D</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">▣</span> Room 3D <small>from a video to a real-scale 3D room</small></div>
+  <ol class="steps" id="steps">
+    <li data-step="1"><b>1</b> Video</li>
+    <li data-step="2"><b>2</b> Map &amp; objects</li>
+    <li data-step="3"><b>3</b> 3D models</li>
+    <li data-step="4"><b>4</b> Editor</li>
+  </ol>
+</header>
+
+<main>
+  <!-- STEP 1: upload + processing -->
+  <section class="step" id="step1">
+    <div class="upload-wrap" id="uploadPane">
+      <h1>Upload a video of your room</h1>
+      <p class="lead">Walk slowly around the room while filming (30 to 60 s). We draw the floor plan to scale, detect the furniture and build the room in 3D.</p>
+      <label class="drop" id="drop">
+        <input type="file" id="fileInput" accept="video/*" multiple hidden>
+        <div class="drop-icon">⬆</div>
+        <div><b>Drop your video here</b> or click to choose it</div>
+        <div class="muted">MP4 or MOV · you can upload several takes of the same room</div>
+      </label>
+      <div id="fileList" class="file-list"></div>
+      <div class="measure">
+        <label for="measure">One real measurement (optional, improves the scale)</label>
+        <input id="measure" placeholder="e.g. bed width = 1.40 m">
+      </div>
+      <div class="actions">
+        <button class="ghost" id="useDemo">Use the demo video (hotel)</button>
+        <button class="primary" id="toProcess" disabled>Next →</button>
+      </div>
+    </div>
+
+    <div class="process-wrap hidden" id="processPane">
+      <h1>Processing your video</h1>
+      <p class="lead" id="processSub">This takes a few minutes. You can keep the page open.</p>
+      <div class="process-grid">
+        <ul class="stages" id="stages"></ul>
+        <div>
+          <div class="muted small" id="framesCaption">Frames picked from the video</div>
+          <div class="frames" id="frames"></div>
+        </div>
+      </div>
+      <div class="bar"><div id="bar"></div></div>
+    </div>
+  </section>
+
+  <!-- STEP 2: map + objects -->
+  <section class="step hidden" id="step2">
+    <div class="step-head">
+      <div>
+        <h1>Your room: map and objects</h1>
+        <p class="lead">Check the floor plan and the image of each object. Each image was built by joining the fragments of the video. Remove anything that is wrong, then confirm.</p>
+      </div>
+      <div class="stats" id="stats2"></div>
+    </div>
+    <div class="split">
+      <div class="panel map-panel">
+        <div class="tabs" id="mapTabs">
+          <button data-v="plan" class="on">Floor plan to scale</button>
+          <button data-v="raw">Raw plan from the video</button>
+          <button data-v="frames">Frames used</button>
+        </div>
+        <div class="map-view" id="mapView"></div>
+        <div class="muted small" id="mapNote">Real scale, in metres. Tap an object to find it in the list.</div>
+      </div>
+      <div class="panel gallery-panel">
+        <div class="gallery-head">
+          <h2>Detected objects <span class="pill" id="kindCount"></span></h2>
+          <div class="gal-tools"><button class="ghost sm" id="approveAll">Approve all</button></div>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </div>
+    <div class="actions sticky">
+      <button class="ghost" id="back2">← Back</button>
+      <button class="primary" id="confirm2">Confirm and generate 3D models →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: generating models -->
+  <section class="step hidden" id="step3">
+    <h1>Generating the 3D models</h1>
+    <p class="lead">One model for each approved object. When they are done they place themselves on the plan, at their real size.</p>
+    <div class="bar"><div id="bar3"></div></div>
+    <div class="gen-grid" id="genGrid"></div>
+    <div class="actions"><button class="primary" id="toEditor" disabled>See the room in 3D →</button></div>
+  </section>
+
+  <!-- STEP 4: editor -->
+  <section class="step hidden" id="step4">
+    <div class="editor">
+      <div class="viewport-wrap">
+        <div id="viewport"></div>
+        <div class="vp-tools">
+          <button id="tUndo" title="Undo (Ctrl+Z)">↶ Undo</button>
+          <button id="tWalls" class="on">Walls</button>
+          <button id="tTop">Top view</button>
+          <button id="tOrbit" class="on">3D</button>
+          <button id="tExport">Save JSON</button>
+        </div>
+        <div class="vp-hint">Drag a piece of furniture to move it · <b>R</b> rotates it 15° · drag the background to orbit the camera</div>
+        <div class="loading" id="vpLoading">Loading models…</div>
+      </div>
+      <aside class="side">
+        <div class="panel">
+          <div class="side-title">Floor plan <span class="muted small" id="roomDims"></span></div>
+          <div id="plan4" class="plan4"></div>
+        </div>
+        <div class="panel" id="selPanel">
+          <div class="muted">Tap a piece of furniture in 3D or on the plan to edit it.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

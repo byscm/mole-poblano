@@ -1,0 +1,1171 @@
+{
+ "name": "Hotel",
+ "main_dir_deg": 51.0,
+ "ceiling_m": 2.9,
+ "outline": [
+  [
+   -0.04565808909590241,
+   -0.8508909089302287
+  ],
+  [
+   3.3778448382152138,
+   3.376783121395693
+  ],
+  [
+   1.4349799345727865,
+   4.9500840990202875
+  ],
+  [
+   0.3588420658775642,
+   3.6211645049288665
+  ],
+  [
+   -1.4674509435463172,
+   5.100067423895984
+  ],
+  [
+   -3.8148160021622113,
+   2.201312987661483
+  ]
+ ],
+ "walls": [
+  [
+   [
+    -0.04565808909590241,
+    -0.8508909089302287
+   ],
+   [
+    3.3778448382152138,
+    3.376783121395693
+   ]
+  ],
+  [
+   [
+    3.3778448382152138,
+    3.376783121395693
+   ],
+   [
+    1.4349799345727865,
+    4.9500840990202875
+   ]
+  ],
+  [
+   [
+    1.4349799345727865,
+    4.9500840990202875
+   ],
+   [
+    0.3588420658775642,
+    3.6211645049288665
+   ]
+  ],
+  [
+   [
+    0.3588420658775642,
+    3.6211645049288665
+   ],
+   [
+    -1.4674509435463172,
+    5.100067423895984
+   ]
+  ],
+  [
+   [
+    -1.4674509435463172,
+    5.100067423895984
+   ],
+   [
+    -3.8148160021622113,
+    2.201312987661483
+   ]
+  ],
+  [
+   [
+    -3.8148160021622113,
+    2.201312987661483
+   ],
+   [
+    -0.04565808909590241,
+    -0.8508909089302287
+   ]
+  ]
+ ],
+ "colors": {
+  "floor": "7c7a76",
+  "wall": "ece7de",
+  "ceiling": "f4f2ee"
+ },
+ "kinds": [
+  {
+   "kind": "bed",
+   "label": "double bed",
+   "label_es": "cama matrimonial",
+   "description": "a double bed on a low dark walnut wood platform base, thick white mattress with a white duvet, white pillows and one beige pillow, no headboard",
+   "why": "two beds side by side against the headboard wall (a_010, a_015, b_011; VGGT top view: white blocks at v 0.55-1.95 and 2.4-3.8)",
+   "sure": "photo",
+   "count": 2,
+   "size_m": [
+    1.4,
+    2.0,
+    0.62
+   ],
+   "render": "model",
+   "clean_view": "data/views/bed.jpg",
+   "cutout": "data/cut/bed.png",
+   "crops": [
+    {
+     "img": "data/crops/bed_1.jpg",
+     "what": "from the foot side, with a person on it"
+    },
+    {
+     "img": "data/crops/bed_2.jpg",
+     "what": "far, from the foot"
+    }
+   ],
+   "model": "data/models/bed.glb"
+  },
+  {
+   "kind": "bedside_table",
+   "label": "bedside table",
+   "label_es": "buró",
+   "description": "a small floating bedside box in light grey / white wood with one drawer and an open slot, mounted on the wall",
+   "why": "between the beds (a_010, a_015, b_011); the second one at the window side of bed 2 is assumed (hotel layout)",
+   "sure": "photo",
+   "count": 2,
+   "size_m": [
+    0.45,
+    0.4,
+    0.22
+   ],
+   "render": "model",
+   "clean_view": "data/views/bedside_table.jpg",
+   "cutout": "data/cut/bedside_table.png",
+   "crops": [
+    {
+     "img": "data/crops/bedside_table_1.jpg",
+     "what": "front three-quarter"
+    },
+    {
+     "img": "data/crops/bedside_table_2.jpg",
+     "what": "front, far"
+    }
+   ],
+   "model": "data/models/bedside_table.glb"
+  },
+  {
+   "kind": "wall_sconce",
+   "label": "wall sconce",
+   "label_es": "lámpara de pared",
+   "description": "a small wall sconce: a dark bronze square wall plate and arm holding a cream fabric cylinder shade, light on",
+   "why": "on the headboard above each bedside table (a_010, a_015, b_011)",
+   "sure": "photo",
+   "count": 2,
+   "size_m": [
+    0.18,
+    0.2,
+    0.25
+   ],
+   "render": "model",
+   "clean_view": "data/views/wall_sconce.jpg",
+   "cutout": "data/cut/wall_sconce.png",
+   "crops": [
+    {
+     "img": "data/crops/wall_sconce_1.jpg",
+     "what": "front"
+    },
+    {
+     "img": "data/crops/wall_sconce_2.jpg",
+     "what": "side"
+    }
+   ],
+   "model": "data/models/wall_sconce.glb"
+  },
+  {
+   "kind": "desk",
+   "label": "desk",
+   "label_es": "escritorio",
+   "description": "a writing desk: dark walnut wood legs and front panel, a white marble top, a small black mini fridge in the open space under the top on one side",
+   "why": "under the TV on the desk wall (a_000, b_020; detections 'mini fridge' and 'water bottle' at u 2.5-2.7, v 2.3-2.9)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    1.2,
+    0.55,
+    0.76
+   ],
+   "render": "model",
+   "clean_view": "data/views/desk.jpg",
+   "cutout": "data/cut/desk.png",
+   "crops": [
+    {
+     "img": "data/crops/desk_1.jpg",
+     "what": "front three-quarter with a chair"
+    },
+    {
+     "img": "data/crops/desk_2.jpg",
+     "what": "front, from the left"
+    }
+   ],
+   "model": "data/models/desk.glb"
+  },
+  {
+   "kind": "phone_desk",
+   "label": "phone table",
+   "label_es": "mesita del teléfono",
+   "description": "a low side desk in dark walnut wood with two drawers on one side, a white marble top",
+   "why": "next to the desk, a bit lower and further out, beside the screen (a_000, a_004)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.8,
+    0.5,
+    0.66
+   ],
+   "render": "model",
+   "clean_view": "data/views/phone_desk.jpg",
+   "cutout": "data/cut/phone_desk.png",
+   "crops": [
+    {
+     "img": "data/crops/phone_desk_1.jpg",
+     "what": "front three-quarter"
+    },
+    {
+     "img": "data/crops/phone_desk_2.jpg",
+     "what": "front, far"
+    }
+   ],
+   "model": "data/models/phone_desk.glb"
+  },
+  {
+   "kind": "shelf_unit",
+   "label": "open shelf unit",
+   "label_es": "mueble abierto",
+   "description": "a low open shelf unit in light grey washed wood: a box with two open shelves, no doors",
+   "why": "left of the desk under the garment rail (a_000, b_020; detections 'towels in plastic wrap', 'folded towel' at v 3.3-4.1)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.95,
+    0.45,
+    0.6
+   ],
+   "render": "model",
+   "clean_view": "data/views/shelf_unit.jpg",
+   "cutout": "data/cut/shelf_unit.png",
+   "crops": [
+    {
+     "img": "data/crops/shelf_unit_1.jpg",
+     "what": "front three-quarter"
+    },
+    {
+     "img": "data/crops/shelf_unit_2.jpg",
+     "what": "front, far"
+    }
+   ],
+   "model": "data/models/shelf_unit.glb"
+  },
+  {
+   "kind": "desk_chair",
+   "label": "desk chair",
+   "label_es": "silla del escritorio",
+   "description": "an upholstered desk armchair in taupe grey fabric with a rounded back and thin black metal legs",
+   "why": "at the desk (a_000, b_009; 'gray upholstered chair')",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.55,
+    0.55,
+    0.82
+   ],
+   "render": "model",
+   "clean_view": "data/views/desk_chair.jpg",
+   "cutout": "data/cut/desk_chair.png",
+   "crops": [
+    {
+     "img": "data/crops/desk_chair_1.jpg",
+     "what": "back three-quarter"
+    },
+    {
+     "img": "data/crops/desk_chair_2.jpg",
+     "what": "front three-quarter"
+    }
+   ],
+   "model": "data/models/desk_chair.glb"
+  },
+  {
+   "kind": "lounge_chair",
+   "label": "orange armchair",
+   "label_es": "silla naranja",
+   "description": "a modern lounge chair: one curved shell seat in burnt orange fabric with thin chrome wire legs",
+   "why": "by the stone wall near the alcove (a_017, a_005, b_009; 'orange chair' at u 2.9 v 0.0)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.75,
+    0.7,
+    0.8
+   ],
+   "render": "model",
+   "clean_view": "data/views/lounge_chair.jpg",
+   "cutout": "data/cut/lounge_chair.png",
+   "crops": [
+    {
+     "img": "data/crops/lounge_chair_1.jpg",
+     "what": "front three-quarter"
+    },
+    {
+     "img": "data/crops/lounge_chair_2.jpg",
+     "what": "far, side"
+    }
+   ],
+   "model": "data/models/lounge_chair.glb"
+  },
+  {
+   "kind": "vanity",
+   "label": "vanity sink",
+   "label_es": "lavabo",
+   "description": "a freestanding bathroom vanity island: a dark walnut wood box with a thick white marble top, a white rectangular vessel sink and a chrome faucet on top, an open shelf underneath",
+   "why": "in the entry alcove behind the screen: seen through the screen holes from the beds (a_000) and close on the right from the alcove (a_010, a_015); sink detections at u 2.6-2.9 put it too far in",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.9,
+    0.5,
+    0.9
+   ],
+   "render": "model",
+   "clean_view": "data/views/vanity.jpg",
+   "cutout": "data/cut/vanity.png",
+   "crops": [
+    {
+     "img": "data/crops/vanity_1.jpg",
+     "what": "close, from the front"
+    },
+    {
+     "img": "data/crops/vanity_2.jpg",
+     "what": "three-quarter"
+    },
+    {
+     "img": "data/crops/vanity_3.jpg",
+     "what": "the end, from the side"
+    }
+   ],
+   "model": "data/models/vanity.glb"
+  },
+  {
+   "kind": "divider_screen",
+   "label": "lattice screen",
+   "label_es": "biombo calado",
+   "description": "a tall flat room divider panel of matte black metal laser cut in an organic Voronoi cell pattern, the holes empty",
+   "why": "in line with the desk wall right after the phone desk, hiding the vanity (a_000, a_004, a_014)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.8,
+    0.02,
+    2.4
+   ],
+   "render": "wall_plane",
+   "clean_view": "data/views/divider_screen.jpg",
+   "cutout": "data/cut/divider_screen.png",
+   "crops": [
+    {
+     "img": "data/crops/divider_screen_1.jpg",
+     "what": "front, slightly angled"
+    },
+    {
+     "img": "data/crops/divider_screen_2.jpg",
+     "what": "close"
+    }
+   ],
+   "model": null
+  },
+  {
+   "kind": "stone_wall",
+   "label": "stone wall",
+   "label_es": "muro de piedra",
+   "description": "a rough old stone and brick masonry wall surface: irregular grey, beige and reddish stones in lime mortar, flat",
+   "why": "the long wall on the luggage side is exposed stone (b_009, b_011, a_017)",
+   "sure": "inferred",
+   "count": 1,
+   "size_m": [
+    3.6,
+    0.02,
+    2.9
+   ],
+   "render": "wall_plane",
+   "clean_view": "data/views/stone_wall.jpg",
+   "cutout": "data/cut/stone_wall.png",
+   "crops": [
+    {
+     "img": "data/crops/stone_wall_1.jpg",
+     "what": "front, angled"
+    },
+    {
+     "img": "data/crops/stone_wall_2.jpg",
+     "what": "close"
+    }
+   ],
+   "model": null
+  },
+  {
+   "kind": "niche_painting",
+   "label": "niche painting",
+   "label_es": "cuadro en nicho",
+   "description": "a tall abstract painting in warm peach, rose and gold tones inside a white plaster frame niche",
+   "why": "set into the stone wall (b_009, b_010)",
+   "sure": "inferred",
+   "count": 1,
+   "size_m": [
+    0.8,
+    0.02,
+    1.6
+   ],
+   "render": "wall_plane",
+   "clean_view": "data/views/niche_painting.jpg",
+   "cutout": "data/cut/niche_painting.png",
+   "crops": [
+    {
+     "img": "data/crops/niche_painting_1.jpg",
+     "what": "front, angled"
+    }
+   ],
+   "model": null
+  },
+  {
+   "kind": "small_painting",
+   "label": "painting",
+   "label_es": "cuadro",
+   "description": "a small framed abstract painting: a terracotta red rectangle on a beige background in a thin light frame",
+   "why": "on the window wall beside bed 2 (a_002, a_003, a_010; 'abstract painting' at u 0.63 v 3.91)",
+   "sure": "photo",
+   "count": 1,
+   "size_m": [
+    0.5,
+    0.02,
+    0.4
+   ],
+   "render": "wall_plane",
+   "clean_view": "data/views/small_painting.jpg",
+   "cutout": "data/cut/small_painting.png",
+   "crops": [
+    {
+     "img": "data/crops/small_painting_1.jpg",
+     "what": "front, angled"
+    }
+   ],
+   "model": null
+  },
+  {
+   "kind": "curtains",
+   "label": "curtains",
+   "label_es": "cortinas",
+   "description": "floor length curtains: two panels of slate blue-grey heavy fabric drawn to the sides of a white sheer curtain",
+   "why": "window on the wall past bed 2 (a_001, a_003)",
+   "sure": "inferred",
+   "count": 1,
+   "size_m": [
+    1.2,
+    0.02,
+    2.6
+   ],
+   "render": "wall_plane",
+   "clean_view": "data/views/curtains.jpg",
+   "cutout": "data/cut/curtains.png",
+   "crops": [
+    {
+     "img": "data/crops/curtains_1.jpg",
+     "what": "front, angled"
+    }
+   ],
+   "model": null
+  },
+  {
+   "kind": "tile_rug",
+   "label": "floor tile mosaic",
+   "label_es": "mosaico del piso",
+   "description": "a patterned cement tile floor inlay: blue-grey, white and black encaustic tiles with a geometric star pattern, a dark grey border, seen flat from directly above",
+   "why": "tile inlay in the grey floor at the foot of the beds (a_010, b_011, a_006)",
+   "sure": "inferred",
+   "count": 1,
+   "size_m": [
+    3.4,
+    1.1,
+    0.004
+   ],
+   "render": "floor_plane",
+   "clean_view": "data/views/tile_rug.jpg",
+   "cutout": "data/cut/tile_rug.png",
+   "crops": [
+    {
+     "img": "data/crops/tile_rug_1.jpg",
+     "what": "from above three-quarter"
+    },
+    {
+     "img": "data/crops/tile_rug_2.jpg",
+     "what": "angled"
+    }
+   ],
+   "model": null
+  }
+ ],
+ "objects": [
+  {
+   "id": "bed_1",
+   "kind": "bed",
+   "label": "double bed",
+   "xy": [
+    -0.75,
+    1.06
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    1.4,
+    2.0,
+    0.62
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "bed_2",
+   "kind": "bed",
+   "label": "double bed",
+   "xy": [
+    -2.19,
+    2.22
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    1.4,
+    2.0,
+    0.62
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "bedside_table_1",
+   "kind": "bedside_table",
+   "label": "bedside table",
+   "xy": [
+    -1.96,
+    1.02
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    0.45,
+    0.4,
+    0.22
+   ],
+   "base_z": 0.4,
+   "sure": "photo"
+  },
+  {
+   "id": "bedside_table_2",
+   "kind": "bedside_table",
+   "label": "bedside table",
+   "xy": [
+    -3.45,
+    2.23
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    0.45,
+    0.4,
+    0.22
+   ],
+   "base_z": 0.4,
+   "sure": "photo"
+  },
+  {
+   "id": "wall_sconce_1",
+   "kind": "wall_sconce",
+   "label": "wall sconce",
+   "xy": [
+    -2.0,
+    0.98
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    0.18,
+    0.2,
+    0.25
+   ],
+   "base_z": 1.05,
+   "sure": "photo"
+  },
+  {
+   "id": "wall_sconce_2",
+   "kind": "wall_sconce",
+   "label": "wall sconce",
+   "xy": [
+    -3.48,
+    2.18
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    0.18,
+    0.2,
+    0.25
+   ],
+   "base_z": 1.05,
+   "sure": "photo"
+  },
+  {
+   "id": "desk",
+   "kind": "desk",
+   "label": "desk",
+   "xy": [
+    -0.45,
+    3.89
+   ],
+   "yaw_deg": 321.0,
+   "size": [
+    1.2,
+    0.55,
+    0.76
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "phone_desk",
+   "kind": "phone_desk",
+   "label": "phone table",
+   "xy": [
+    0.27,
+    3.11
+   ],
+   "yaw_deg": 321.0,
+   "size": [
+    0.8,
+    0.5,
+    0.66
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "shelf_unit",
+   "kind": "shelf_unit",
+   "label": "open shelf unit",
+   "xy": [
+    -1.24,
+    4.59
+   ],
+   "yaw_deg": 321.0,
+   "size": [
+    0.95,
+    0.45,
+    0.6
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "desk_chair",
+   "kind": "desk_chair",
+   "label": "desk chair",
+   "xy": [
+    -0.76,
+    3.43
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    0.55,
+    0.55,
+    0.82
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "lounge_chair",
+   "kind": "lounge_chair",
+   "label": "orange armchair",
+   "xy": [
+    2.33,
+    2.68
+   ],
+   "yaw_deg": 231.0,
+   "size": [
+    0.75,
+    0.7,
+    0.8
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "vanity",
+   "kind": "vanity",
+   "label": "vanity sink",
+   "xy": [
+    1.18,
+    3.61
+   ],
+   "yaw_deg": 51.0,
+   "size": [
+    0.9,
+    0.5,
+    0.9
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "divider_screen",
+   "kind": "divider_screen",
+   "label": "lattice screen",
+   "xy": [
+    0.77,
+    3.26
+   ],
+   "yaw_deg": 321.0,
+   "size": [
+    0.8,
+    0.02,
+    2.4
+   ],
+   "base_z": 0.0,
+   "sure": "photo"
+  },
+  {
+   "id": "stone_wall",
+   "kind": "stone_wall",
+   "label": "stone wall",
+   "xy": [
+    1.07,
+    0.62
+   ],
+   "yaw_deg": 231.0,
+   "size": [
+    3.6,
+    0.02,
+    2.9
+   ],
+   "base_z": 0.0,
+   "sure": "inferred"
+  },
+  {
+   "id": "niche_painting",
+   "kind": "niche_painting",
+   "label": "niche painting",
+   "xy": [
+    1.46,
+    1.13
+   ],
+   "yaw_deg": 231.0,
+   "size": [
+    0.8,
+    0.02,
+    1.6
+   ],
+   "base_z": 0.5,
+   "sure": "inferred"
+  },
+  {
+   "id": "small_painting",
+   "kind": "small_painting",
+   "label": "painting",
+   "xy": [
+    -2.93,
+    3.19
+   ],
+   "yaw_deg": 51.0,
+   "size": [
+    0.5,
+    0.02,
+    0.4
+   ],
+   "base_z": 1.35,
+   "sure": "photo"
+  },
+  {
+   "id": "curtains",
+   "kind": "curtains",
+   "label": "curtains",
+   "xy": [
+    -2.08,
+    4.19
+   ],
+   "yaw_deg": 51.0,
+   "size": [
+    1.2,
+    0.02,
+    2.6
+   ],
+   "base_z": 0.0,
+   "sure": "inferred"
+  },
+  {
+   "id": "tile_rug",
+   "kind": "tile_rug",
+   "label": "floor tile mosaic",
+   "xy": [
+    -0.48,
+    2.83
+   ],
+   "yaw_deg": 141.0,
+   "size": [
+    3.4,
+    1.1,
+    0.004
+   ],
+   "base_z": 0.0,
+   "sure": "inferred"
+  }
+ ],
+ "parts": [
+  {
+   "name": "headboard",
+   "kind": "box",
+   "center": [
+    -2.11618180473741,
+    0.9222931037898514,
+    0.65
+   ],
+   "size": [
+    0.040000000000000036,
+    4.1499999999999995,
+    1.3
+   ],
+   "yaw": 51.0,
+   "pitch": 0.0,
+   "mat": "6e4a30"
+  },
+  {
+   "name": "tv_panel",
+   "kind": "box",
+   "center": [
+    -0.5983568662078651,
+    4.306215747110437,
+    1.2
+   ],
+   "size": [
+    0.029999999999999805,
+    2.15,
+    2.4
+   ],
+   "yaw": 51.0,
+   "pitch": 0.0,
+   "mat": "7a5638"
+  },
+  {
+   "name": "tv",
+   "kind": "box",
+   "center": [
+    -0.3320999463034948,
+    4.039134762008469,
+    1.575
+   ],
+   "size": [
+    0.050000000000000266,
+    1.1,
+    0.6499999999999999
+   ],
+   "yaw": 51.0,
+   "pitch": 0.0,
+   "mat": "0d0d0f"
+  },
+  {
+   "name": "door",
+   "kind": "box",
+   "center": [
+    2.4952139003202323,
+    3.995016594664996,
+    1.1
+   ],
+   "size": [
+    0.040000000000000036,
+    0.9500000000000001,
+    2.2
+   ],
+   "yaw": 51.0,
+   "pitch": 0.0,
+   "mat": "3e3128"
+  },
+  {
+   "name": "spot_0.9_1.25",
+   "kind": "disc",
+   "axis": "z",
+   "center": [
+    -0.4050440998763598,
+    1.4860818541235707,
+    2.894
+   ],
+   "radius": 0.045,
+   "thick": 0.01,
+   "yaw": 51.0,
+   "mat": "light"
+  },
+  {
+   "name": "spot_0.9_3.1",
+   "kind": "disc",
+   "axis": "z",
+   "center": [
+    -1.842764128571756,
+    2.6503245775657702,
+    2.894
+   ],
+   "radius": 0.045,
+   "thick": 0.01,
+   "yaw": 51.0,
+   "mat": "light"
+  },
+  {
+   "name": "spot_2.3_2.2",
+   "kind": "disc",
+   "axis": "z",
+   "center": [
+    -0.26228421579071015,
+    3.1719405716606754,
+    2.894
+   ],
+   "radius": 0.045,
+   "thick": 0.01,
+   "yaw": 51.0,
+   "mat": "light"
+  },
+  {
+   "name": "spot_3.9_0.7",
+   "kind": "disc",
+   "axis": "z",
+   "center": [
+    1.9103473520744867,
+    3.4713935234170727,
+    2.894
+   ],
+   "radius": 0.045,
+   "thick": 0.01,
+   "yaw": 51.0,
+   "mat": "light"
+  }
+ ],
+ "frames": [
+  {
+   "name": "a_000_t01.12",
+   "img": "data/frames/a_000_t01.12.jpg",
+   "used": true
+  },
+  {
+   "name": "a_001_t01.38",
+   "img": "data/frames/a_001_t01.38.jpg",
+   "used": true
+  },
+  {
+   "name": "a_002_t02.62",
+   "img": "data/frames/a_002_t02.62.jpg",
+   "used": false
+  },
+  {
+   "name": "a_003_t04.62",
+   "img": "data/frames/a_003_t04.62.jpg",
+   "used": true
+  },
+  {
+   "name": "a_004_t05.62",
+   "img": "data/frames/a_004_t05.62.jpg",
+   "used": true
+  },
+  {
+   "name": "a_005_t06.62",
+   "img": "data/frames/a_005_t06.62.jpg",
+   "used": true
+  },
+  {
+   "name": "a_006_t08.12",
+   "img": "data/frames/a_006_t08.12.jpg",
+   "used": true
+  },
+  {
+   "name": "a_007_t09.12",
+   "img": "data/frames/a_007_t09.12.jpg",
+   "used": true
+  },
+  {
+   "name": "a_009_t11.62",
+   "img": "data/frames/a_009_t11.62.jpg",
+   "used": true
+  },
+  {
+   "name": "a_010_t13.12",
+   "img": "data/frames/a_010_t13.12.jpg",
+   "used": true
+  },
+  {
+   "name": "a_011_t13.38",
+   "img": "data/frames/a_011_t13.38.jpg",
+   "used": true
+  },
+  {
+   "name": "a_012_t15.38",
+   "img": "data/frames/a_012_t15.38.jpg",
+   "used": true
+  },
+  {
+   "name": "a_013_t15.88",
+   "img": "data/frames/a_013_t15.88.jpg",
+   "used": true
+  },
+  {
+   "name": "a_014_t17.38",
+   "img": "data/frames/a_014_t17.38.jpg",
+   "used": true
+  },
+  {
+   "name": "a_015_t18.12",
+   "img": "data/frames/a_015_t18.12.jpg",
+   "used": true
+  },
+  {
+   "name": "a_016_t19.62",
+   "img": "data/frames/a_016_t19.62.jpg",
+   "used": true
+  },
+  {
+   "name": "a_017_t20.88",
+   "img": "data/frames/a_017_t20.88.jpg",
+   "used": true
+  },
+  {
+   "name": "a_018_t21.88",
+   "img": "data/frames/a_018_t21.88.jpg",
+   "used": true
+  },
+  {
+   "name": "a_019_t22.88",
+   "img": "data/frames/a_019_t22.88.jpg",
+   "used": true
+  },
+  {
+   "name": "b_000_t01.12",
+   "img": "data/frames/b_000_t01.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_001_t01.38",
+   "img": "data/frames/b_001_t01.38.jpg",
+   "used": true
+  },
+  {
+   "name": "b_003_t04.38",
+   "img": "data/frames/b_003_t04.38.jpg",
+   "used": false
+  },
+  {
+   "name": "b_008_t10.62",
+   "img": "data/frames/b_008_t10.62.jpg",
+   "used": true
+  },
+  {
+   "name": "b_009_t11.88",
+   "img": "data/frames/b_009_t11.88.jpg",
+   "used": true
+  },
+  {
+   "name": "b_010_t12.12",
+   "img": "data/frames/b_010_t12.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_011_t14.12",
+   "img": "data/frames/b_011_t14.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_012_t14.62",
+   "img": "data/frames/b_012_t14.62.jpg",
+   "used": true
+  },
+  {
+   "name": "b_013_t16.38",
+   "img": "data/frames/b_013_t16.38.jpg",
+   "used": true
+  },
+  {
+   "name": "b_014_t17.38",
+   "img": "data/frames/b_014_t17.38.jpg",
+   "used": false
+  },
+  {
+   "name": "b_016_t20.38",
+   "img": "data/frames/b_016_t20.38.jpg",
+   "used": false
+  },
+  {
+   "name": "b_017_t21.12",
+   "img": "data/frames/b_017_t21.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_018_t21.88",
+   "img": "data/frames/b_018_t21.88.jpg",
+   "used": true
+  },
+  {
+   "name": "b_019_t23.12",
+   "img": "data/frames/b_019_t23.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_020_t25.12",
+   "img": "data/frames/b_020_t25.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_021_t26.12",
+   "img": "data/frames/b_021_t26.12.jpg",
+   "used": true
+  },
+  {
+   "name": "b_022_t26.62",
+   "img": "data/frames/b_022_t26.62.jpg",
+   "used": true
+  },
+  {
+   "name": "b_023_t28.12",
+   "img": "data/frames/b_023_t28.12.jpg",
+   "used": false
+  },
+  {
+   "name": "b_024_t28.88",
+   "img": "data/frames/b_024_t28.88.jpg",
+   "used": true
+  }
+ ],
+ "plans": {
+  "plano_v0": "data/plans/plano_v0.jpg",
+  "plano_1": "data/plans/plano_1.jpg"
+ },
+ "stills": [
+  {
+   "name": "1_camas",
+   "img": "data/stills/1_camas.jpg"
+  },
+  {
+   "name": "2_escritorio",
+   "img": "data/stills/2_escritorio.jpg"
+  },
+  {
+   "name": "3_lavabo_biombo",
+   "img": "data/stills/3_lavabo_biombo.jpg"
+  },
+  {
+   "name": "4_muro_piedra",
+   "img": "data/stills/4_muro_piedra.jpg"
+  },
+  {
+   "name": "planta",
+   "img": "data/stills/planta.jpg"
+  }
+ ],
+ "photo_vs_3d": "data/stills/photo_vs_3d.jpg",
+ "stats": {
+  "frames_total": 38,
+  "frames_used": 33,
+  "objects": 18,
+  "kinds": 15
+ }
+}
